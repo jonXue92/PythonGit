@@ -10,4 +10,4 @@ KickStart2019: My messy solutions to the problems from Google Kick Start 2019 in
 
 KMCLib: A kinetic Monte Carlo Python/C++ library From xstl91
 
-Turtle: "A lovely gift for my girlfriend!
+Turtle: A lovely gift for my girlfriend!
