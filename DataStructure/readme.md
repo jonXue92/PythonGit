@@ -1,3 +1,3 @@
 Content:
 
-chapter2: Linear structure
+**chapter2**: Linear structure
