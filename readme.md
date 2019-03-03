@@ -8,8 +8,6 @@ The codes here are very basic, thank you for your reading.
 
 3. **KickStart2019**: My messy solutions to the problems from Google Kick Start 2019 in Python 3.
 
-4. **KMCLib**: A kinetic Monte Carlo Python/C++ library From xstl91
+4. **StudyNotes**: The notes while learning Python
 
-5. **StudyNotes**: The notes while learning Python
-
-6. **Turtle**: A lovely gift for my girlfriend!
+5. **Turtle**: A lovely gift for my girlfriend!
