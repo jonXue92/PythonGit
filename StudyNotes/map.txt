@@ -1,0 +1,269 @@
+map()函数
+Return an iterator that applies function to every item of iterable, yielding the results
+map()是 Python 内置的高阶函数，函数的原型是map(function, iterable, …)，会根据提供的函数对指定序列做映射,返回结果是一个列表。
+
+它接收接收两个参数，参数function传的是一个函数名，可以是python内置的，也可以是自定义的。参数iterable传的是一个可以迭代的对
+象，例如列表，元组，字符串这样的。 将function依次调用于参数序列的每一个元素，回包含每次 function 函数返回值的新列表。
+
+iterable后面省略号的意思就是可以传很多个iterable，如果有额外的iterable参数，并行的从这些参数中取元素，并调用function。如果一
+个iterable参数比另外的iterable参数要短，将以None扩展该参数元素。
+
+1、当seq只有一个时，将函数func作用于这个seq的每个元素上，并得到一个新的seq。 
+对于list [1, 2, 3, 4, 5, 6, 7, 8, 9]，把list的每个元素都作平方，可以传入函数f(x)=x*x，就可以利用map()函数完成这个计算：
+def f(x):
+    return x*x
+print map(f, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+输出结果：
+[1, 4, 9, 10, 25, 36, 49, 64, 81]
+注意：map()函数不改变原有的list，而是返回一个新的list。
+
+利用map()函数，可以把一个 list 转换为另一个 list，只需要传入转换函数。
+由于list包含的元素可以是任何类型，因此，map()不仅仅可以处理只包含数值的list，事实上它可以处理包含任意类型的list，只要传入的
+函数f可以处理这种数据类型。
+
+假设用户输入的英文名字不规范，没有按照首字母大写，后续字母小写的规则，利用map()函数把一个list（包含若干不规范的英文名字）变
+成一个包含规范英文名字的list：
+输入：['adam', 'LISA', 'barT']
+输出：['Adam', 'Lisa', 'Bart']
+def format_name(s):
+    s1=s[0:1].upper()+s[1:].lower();
+    return s1;
+print map(format_name, ['adam', 'LISA', 'barT'])
+
+2、当seq多于一个时，map可以并行（注意是并行）地对每个seq执行如下图所示的过程：
+l2=map(lambda x,y:x**y,[1,2,3],[1,2,3])
+for i in l2:
+    print(i)
+	
+1
+4
+27
+
+l3=map(lambda x,y:(x**y,x+y),[1,2,3],[1,2,3])
+for i in l3:
+    print(i)
+	
+(1, 2)
+(4, 4)
+(27, 6)
+
+python3中可以处理类表长度不一致的情况，但无法处理类型不一致的情况，
+l4=map(lambda x,y:(x**y,x+y),[1,2,3],[1,2])
+for i in l4:
+    print(i)
+	
+(1, 2)
+(4, 4)
+
+l4=map(lambda x,y:(x**y,x+y),[1,2,3],[1,2,'a'])
+for i in l4:
+    print(i)
+	
+(1, 2)
+(4, 4)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 1, in <lambda>
+TypeError: unsupported operand type(s) for ** or pow(): 'int' and 'str'
+
+特殊用法，做类型转换：
+l=map(int,'1234')
+for i in l:
+    print(type(i))
+    print(i)
+ 
+<class 'int'>
+1
+<class 'int'>
+2
+<class 'int'>
+3
+<class 'int'>
+4
+
+如果函数是 None，自动假定一个‘identity’函数,这时候就是模仿 zip()函数，
+l=[1,2,3]
+x=map(None,l)
+print(x)
+
+<map object at 0x000001F75DAAAB00>
+
+这时候 None 类型不是一个可以调用的对象。所以他没法返回值。
+
+
+***将元组转换成list***
+>>> map(int,(1,2,3))
+<map object at 0x000001F75DAAA898>
+>>> for i in map(int,(1,2,3)):
+...     print(i)
+...
+1
+2
+3
+>>>
+***提取字典的key，并将结果存放在一个list中***
+>>> map(int,{1:2,2:3,3:4})
+<map object at 0x000001F75DAAAC18>
+>>> for i in map(int,{1:2,2:3,3:4}):
+...     print(i)
+...
+1
+2
+3
+>>>
+
+***字符串转换成元组，并将结果以列表的形式返回***
+>>> map(tuple,'agdf')
+<map object at 0x000001F75DAAA828>
+>>> for i in map(tuple,'agdf'):
+...     print(i)
+...
+('a',)
+('g',)
+('d',)
+('f',)
+>>>
+
+
+***  判断list中重复出现的次数
+方法一：
+>>> mylist=[1,2,2,3,3,3,4,4,4,4]
+>>> myset=set(mylist)
+>>> for i in myset:
+...     print("the %d has found %d" %(i,mylist.count(i)))
+...
+the 1 has found 1
+the 2 has found 2
+the 3 has found 3
+the 4 has found 4
+>>>
+方法二：
+>>> List=[1,2,2,3,3,3,4,4,4,4]
+>>> a={}
+>>> for i in List:
+...     if List.count(i)>1:
+...         a[i] = List.count(i)
+...
+>>> print(a)
+{2: 2, 3: 3, 4: 4}
+>>>
+方法三：利用字典的特性来实现。
+>>> from collections import Counter
+>>> Counter([1,2,2,3,3,3,4,4,4,4])
+Counter({4: 4, 3: 3, 2: 2, 1: 1})
+>>>
+
+
+>>> def add(x,y,z):
+...     return x+y+z
+...
+>>> list1=[1,2,3]
+>>> list2=[4,6,8]
+>>> list3=[9,12,15]
+>>> res=map(add,list1,list2,list3)
+>>> print(res)
+<map object at 0x000001F75DE5EF98>
+>>> for i in res:
+...     print(i)
+...
+14
+20
+26
+>>>
+
+>>> def oh(x,y,z):
+...     return x,y,z
+...
+>>> list1=[1,2,3]
+>>> list2=[1,2,3,4]
+>>> list3=[1,2]
+>>> res=map(oh,list1,list2,list3)
+>>> print(res)
+<map object at 0x000001C4F9CBAA20>
+>>> for i in res:
+...     print(i)
+...
+(1, 1, 1)
+(2, 2, 2)
+>>>
+
+
+Python 2.x 返回列表。
+Python 3.x 返回迭代器。
+
+在Python2中map函数会返回一个list列表，如代码：
+>>> def f(x, y): return (x, y)
+>>> l1 = [ 0, 1, 2, 3, 4, 5, 6 ]
+>>> l2 = [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ]
+>>> map(f, l1, l2)
+[(0, 'Sun'), (1, 'Mon'), (2, 'Tue'), (3, 'Wed'), (4, 'Thu'), (5, 'Fri'), (6, 'Sat')]
+但是，在Python3中返回结果如下：
+>>> map(f,l1,l2)
+<map object at 0x000001C4F9CBACC0>
+>>>
+如果想要得到Python2的那种结果，即返回list列表，那么必须用list作用于map，如下：
+>>> list(map(f,l1,l2))
+[(0, 'Sun'), (1, 'Mon'), (2, 'Tue'), (3, 'Wed'), (4, 'Thu'), (5, 'Fri'), (6, 'Sat')]
+>>>
+
+
+>>> a=map(lambda x,y:x+y, [1,2,3],[1,2])
+>>> print([b for b in a])
+[2, 4]
+>>>
+
+
+
+
+filter(function, iterable)
+Construct an iterator from those elements of iterable for which function returns true.If function is None, all elements of
+ iterable that are false are removed
+ 
+>>> a=filter(lambda x:x>2,[1,2,3])
+>>> print([b for b in a])
+[3]
+>>> a=filter(None,[1,2,0,-3])
+>>> print([b for b in a])
+[1, 2, -3]
+>>>
+
+
+
+
+zip()
+Make an iterator that aggregates elements from each of the iterables
+
+>>> x=[1,2,3]
+>>> y=[3,5,6]
+>>> print(list(zip(x,y)))
+[(1, 3), (2, 5), (3, 6)]
+>>>
+
+
+
+
+>>> a=dict(one=1,two=2,three=3)
+>>> b={'one':1,'two':2,'three':3}
+>>> c=dict(zip(['one','two','three'],[1,2,3]))
+>>> d=dict([('two',2),('one',1),('three',3)])
+>>> e=dict({'three':3,'one':1,'two':2})
+>>> a==b
+True
+>>> a==c
+True
+>>> a==d
+True
+>>> a==e
+True
+>>> a==b==c==d==e
+True
+>>>
+
+
+
+
+>>> a=map(lambda x: dict(zip(' hy', [x])),filter(lambda x: x > 3, [1,2,3,4,5,6]))
+>>> print([b for b in a])
+[{' ': 4}, {' ': 5}, {' ': 6}]
+>>>

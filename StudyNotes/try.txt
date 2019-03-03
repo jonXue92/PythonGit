@@ -1,0 +1,389 @@
+（Python）异常处理try...except、raise
+
+异常即是一个事件，该事件会在程序执行过程中发生，影响了程序的正常执行。
+一般情况下，在Python无法正常处理程序时就会发生一个异常。
+异常是Python对象，表示一个错误。
+当Python脚本发生异常时我们需要捕获处理它，否则程序会终止执行。
+
+一、try...except
+捕捉异常可以使用try/except语句。
+try/except语句用来检测try语句块中的错误，从而让except语句捕获异常信息并处理。
+如果你不想在异常发生时结束你的程序，只需在try里捕获它。
+
+做除法时，除数为0，会引起一个ZeroDivisionError
+>>> a=10
+>>> b=0
+>>> c=a/b
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+>>>
+程序因为ZeroDivisionError而中断了。为了处理异常，我们使用try...except,更改代码：
+>>> a=10													>>> a=10	
+>>> b=0														>>> b=0
+>>> try:													>>> try:	
+...     c=a/b												...     c=b/a
+...     print(c)											...     print(c)	
+... except (IOError,ZeroDivisionError) as x:				... except (IOError,ZeroDivisionError) as x:	
+...     print(x)											...     print(x)	
+... else:													... else:
+...     print("no error")									...     print("no error")						
+...															...									
+division by zero											0.0													
+															no error						
+
+把可能发生错误的语句放在try模块里。except可以处理一个专门的异常，也可以处理一组圆括号中的异常，如果except后没有指定异常，则默认处理所有的异常。每一个try，
+都必须至少有一个except
+
+try ....except...else 语句，当没有异常发生时，else中的语句将会被执行。
+>>> try:
+...     <语句>/pass   #运行别的代码
+... except <名字>：
+...     <语句>        #如果在try部份引发了'name'异常
+... except <名字> as <数据>:
+...     <语句>        #如果引发了'name'异常，获得附加的数据，作为输出的异常信息参数
+... else:
+...     <语句>        #如果没有异常发生
+
+try的工作原理是，当开始一个try语句后，python就在当前程序的上下文中作标记，这样当异常出现时就可以回到这里，try子句先执行，接下来会发生什么依赖于执行时是否出现异常。
+如果当try后的语句执行时发生异常，python就跳回到try并执行第一个匹配该异常的except子句，异常处理完毕，控制流就通过整个try语句（除非在处理异常时又引发新的异常）。
+如果在try后的语句里发生了异常，却没有匹配的except子句，异常将被递交到上层的try，或者到程序的最上层（这样将结束程序，并打印缺省的出错信息）。
+如果在try子句执行时没有发生异常，python将执行else语句后的语句（如果有else的话），然后控制流通过整个try语句。
+
+变量接收的异常值通常包含在异常的语句中。在元组的表单中变量可以接收一个或者多个值。元组通常包含错误字符串，错误数字，错误位置。
+
+二、raise 引发一个异常
+raise语法格式如下：
+	raise [Exception [, args [, traceback]]]
+语句中Exception是异常的类型（例如，NameError）参数是一个异常参数值。该参数是可选的，如果不提供，异常的参数是"None"。
+最后一个参数是可选的（在实践中很少使用），如果存在，是跟踪异常对象。
+
+一个异常可以是一个字符串，类或对象。 Python的内核提供的异常，大多数都是实例化的类，这是一个类的实例的参数。定义一个异常非常简单，如下所示：
+def mye(level):
+    if level < 1:
+        raise Exception("Invalid level!", level)
+        # 触发异常后，后面的代码就不会再执行
+try:
+    mye(0)                // 触发异常
+except "Invalid level!":
+    print 1
+else:
+    print 2
+执行以上代码，输出结果为：
+Traceback (most recent call last):
+  File "mye.py", line 6, in <module>
+    mye(0)
+  File "mye.py", line 3, in mye
+    raise Exception("Invalid level!", level)
+Exception: ('Invalid level!', 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "mye.py", line 7, in <module>
+    except "Invalid level!":
+TypeError: catching classes that do not inherit from BaseException is not allowed
+
+三、try ...finally 
+python总会执行finally子句，无论try子句执行时是否发生异常。
+1、如果没有发生异常，python运行try子句，然后是finally子句，然后继续。
+2、如果在try子句发生了异常，python就会回来执行finally子句，然后把异常递交给上层try，控制流不会通过整个try语句。
+
+>>> a=10
+>>> b=0
+>>> try:
+...     print(a/b)
+... finally:
+...     print("always excute")
+...
+always excute
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+ZeroDivisionError: division by zero
+>>>
+finally语句也可以和except语句一起使用。
+try: 
+  x 				1:如果x没有异常，执行z,i	2:如果x有异常， 一：如果except捕捉到异常则执行y,i
+except(name): 		二：没捕捉到，执行i,然后返回内置异常处理 
+  y
+else:
+  z
+finally:
+  i
+  
+>>> a=10
+>>> b=0
+>>> try:
+...     print(a/b)
+... except Exception as e:
+...     print("error")
+... else:
+...     print("no error")
+... finally:
+...     print("always excute")
+...
+error
+always excute
+>>>
+四、自定义一个异常类
+通过创建一个新的异常类，程序可以命名它们自己的异常。异常应该是典型的继承自Exception类，通过直接或间接的方式。
+自定义一个MyException类，继承Exception。
+class MyException(Exception):
+    def __init__(self,message):
+        Exception.__init__(self)
+        self.message=message 
+
+如果输入的数字小于10，就引发一个MyException异常：
+a=int(input("please input a num:"))
+if a<10:
+    try:
+        raise MyException("my excepition is raised ")
+    except MyException as e:
+        print(e.message)
+
+以下为与RuntimeError相关的实例,实例中创建了一个类，基类为RuntimeError，用于在异常触发时输出更多的信息。
+在try语句块中，用户自定义的异常后执行except块语句，变量 e 是用于创建Networkerror类的实例。
+class Networkerror(RuntimeError):
+    def __init__(self, arg):
+        self.args = arg
+
+try:
+    raise Networkerror("Bad hostname")
+except Networkerror as e:
+    print(e.args)
+
+('B', 'a', 'd', ' ', 'h', 'o', 's', 't', 'n', 'a', 'm', 'e')	
+
+try：执行可能会出错的试探性语句，即这里面的语句是可以导致致命性错误使得程序无法继续执行下去
+except: 捕获所有异常，如果try里面的语句无法正确执行，那么就执行except里面的语句，这里面可以是错误信息或者其他的可执行语句
+except name: 只捕获特定的异常
+except name as value: 捕获异常和它的附加数据（将异常的信息保存到value，）
+except (name1,name2): 捕获任何列出的异常
+else: 如果没有异常，如果try里面的语句可以正常执行，那么就执行else里面的语句（相当于程序没有碰到致命性错误）
+finally: 总是执行
+
+五、python所有的标准异常类：
+异常名称									描述																
+BaseException								所有异常的基类			
+SystemExit									Python 解释器请求退出														
+KeyboardInterrupt							用户中断执行(通常是输入^C)																		
+Exception									常规错误的基类														
+StopIteration								迭代器没有更多的值																		
+GeneratorExit								生成器(generator)发生异常来通知退出																
+StandardError								所有的内建标准异常的基类																	
+ArithmeticError								所有数值计算错误的基类																				
+FloatingPointError							浮点计算错误																					
+OverflowError								数值运算超出最大限制																				
+ZeroDivisionError							除(或取模)零 (所有数据类型)																								
+AssertionError								断言语句失败																									
+AttributeError								对象没有这个属性																										
+EOFError									没有内建输入,到达EOF 标记																										
+EnvironmentError							操作系统错误的基类																							
+IOError										输入/输出操作失败																						
+OSError										操作系统错误																								
+WindowsError								系统调用失败																								
+ImportError									导入模块/对象失败																								
+LookupError									无效数据查询的基类										
+IndexError									序列中没有没有此索引(index)																
+KeyError									映射中没有这个键													
+MemoryError									内存溢出错误(对于Python 解释器不是致命的)									
+NameError									未声明/初始化对象 (没有属性)															
+UnboundLocalError							访问未初始化的本地变量								
+ReferenceError								弱引用(Weak reference)试图访问已经垃圾回收了的对象																	
+RuntimeError								一般的运行时错误															
+NotImplementedError							尚未实现的方法																
+SyntaxError	Python 							语法错误															
+IndentationError							缩进错误																	
+TabError									Tab 和空格混用																
+SystemError									一般的解释器系统错误															
+TypeError									对类型无效的操作																	
+ValueError									传入无效的参数																			
+UnicodeError								Unicode 相关的错误																		
+UnicodeDecodeError							Unicode 解码时的错误																			
+UnicodeEncodeError							Unicode 编码时错误													
+UnicodeTranslateError						Unicode 转换时错误																			
+Warning										警告的基类																				
+DeprecationWarning							关于被弃用的特征的警告																						
+FutureWarning								关于构造将来语义会有改变的警告																						
+OverflowWarning								旧的关于自动提升为长整型(long)的警告																							
+PendingDeprecationWarning					关于特性将会被废弃的警告																	
+RuntimeWarning								可疑的运行时行为(runtime behavior)的警告																
+SyntaxWarning								可疑的语法的警告																													
+UserWarning									用户代码生成的警告																											
+
+
+
+
+>>> def temp_convert(var):
+...     try:
+...         return int(var)
+...     except ValueError as Argument:
+...         print("参数没有包含数字\n",Argument)
+...
+>>> temp_convert("xzy")
+参数没有包含数字
+ invalid literal for int() with base 10: 'xzy'
+>>>
+
+
+
+
+方法一：捕获所有异常
+>>> try:
+...     a=b
+...     b=c
+... except Exception as e:
+...     print(Exception,":",e)
+...
+<class 'Exception'> : name 'b' is not defined
+>>>
+方法二：采用traceback模块查看异常
+#引入python中的traceback模块，跟踪错误
+>>> import traceback
+>>> try:
+...     a=b
+...     b=c
+... except:
+...     traceback.print_exc()
+...
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+NameError: name 'b' is not defined
+>>>
+方法三：采用sys模块回溯最后的异常
+>>> import sys
+>>> try:
+...     a=b
+...     b=c
+... except:
+...     info=sys.exc_info()
+...     print(info[0],":",info[1])
+...
+<class 'NameError'> : name 'b' is not defined
+>>>
+
+把这些异常保存到一个日志文件中，来分析这些异常
+把　traceback.print_exc()　打印在屏幕上的信息保存到一个文本文件中
+>>> import traceback
+>>> try:
+...     a=b
+...     b=c
+... except:
+...     f=open("c:log.txt",'a')
+...     traceback.print_exc(file=f)
+...     f.flush()
+...     f.close()
+...
+>>>
+
+
+
+
+>>> try:
+...     f=open('file.txt')
+... except IOError as e:
+...     print(e)
+... else:
+...     print('wrong')
+...
+[Errno 2] No such file or directory: 'file.txt'
+>>>
+
+
+
+
+>>> x='abc'
+>>> def fetcher(obj,index):
+...     return obj[index]
+...
+>>> fetcher(x,4)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 2, in fetcher
+IndexError: string index out of range
+>>>
+第一： try不仅捕获异常，而且会恢复执行
+>>> def catcher():
+...     try:
+...         fetcher(x,4)
+...     except:
+...         print("got exception")
+...     print("continuing")
+...
+>>> catcher()
+got exception
+continuing
+>>>
+第二：无论try是否发生异常，finally总会执行
+>>> def catcher():
+...     try:
+...         fetcher(x,4)
+...     finally:
+...         print('after fetch')
+...
+>>> catcher()
+after fetch
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 3, in catcher
+  File "<stdin>", line 2, in fetcher
+IndexError: string index out of range
+>>>
+第三：try无异常，才会执行else
+>>> def catcher():
+...     try:
+...         fetcher(x,4)
+...     except:
+...         print("got exception")
+...     else:
+...         print("not exception")
+...
+>>> catcher()
+got exception
+>>>
+>>> def catcher():
+...     try:
+...         fetcher(x,2)
+...     except:
+...         print("got exception")
+...     else:
+...         print("not exception")
+...
+>>> catcher()
+not exception
+>>>
+else作用：没有else语句，当执行完try语句后，无法知道是没有发生异常，还是发生了异常并被处理过了。通过else可以清楚的区分开。
+第四：利用raise传递异常
+raise语句不包括异常名称或额外资料时，会重新引发当前异常。如果希望捕获处理一个异常，而又不希望异常在程序代码中消失，可以通过raise重新引发该异常。
+第五：except(name1, name2)
+>>> def catcher():
+...     try:
+...         fetcher(x,4)
+...     except(TypeError,IndexError):
+...         print("got exception")
+...     else:
+...         print("not exception")
+...
+>>> catcher()
+got exception
+>>>
+
+
+
+
+if __name__ == '__main__':
+    fname = input("Please input the file's name:")
+    print(fname)
+
+try:    #尝试执行一个或多个语句
+    fobj = open(fname,"r")    #尝试打开一个文件
+except IOError as error:      #如果无法执行"try"里面的语句,那么就执行except里面的语句  另外需要注意的是,"error"相当于是一个变量,用于存储错误信息的
+    print ("*** file open error", error)                        #标准语句和相关信息。
+else:   #如果try里面的语句成功执行,那么就执行else里面的语句
+    for eachline in fobj:
+        print(eachline,)
+        fobj.close()
+		
+Please input the file's name:s
+s
+*** file open error [Errno 2] No such file or directory: 's'

@@ -1,0 +1,41 @@
+enumerate()是python的内置函数
+enumerate在字典上是枚举、列举的意思
+对于一个可迭代的（iterable）/可遍历的对象（如列表、元组或字符串），enumerate将其组合成一个索引序列，利用它可以同时获得索引和值
+enumerate() 方法的语法:
+    enumerate(sequence,[start=0])
+
+sequence -- 一个序列、迭代器或其他支持迭代对象。
+start -- 下标起始位置。
+
+enumerate多用于在for循环中得到计数
+例如对于一个seq，得到：
+    (0,seq[0]),(1,seq[1]),(2,seq[2])
+numerate()返回的是一个enumerate对象，例如： 
+seq=range(5)
+enumerate(seq)
+<enumerate object at 0x000001C10E912C60>
+
+list1=['This','is','a','test']
+for index,item in enumerate(list1,1):
+    print(index,item)
+
+1 This
+2 is
+3 a
+4 test
+>>>
+
+如果要统计文件的行数，可以这样写：
+count=len(open(filepath,'r').readlines())
+这种方法简单，但是可能比较慢，当文件比较大时甚至不能工作。
+可以利用enumerate()：
+count=0
+for index,item in enumerate(open(fielpath,'r')):
+    count += 1
+
+>>> aList=['hello','world','!']
+>>> List2=list(enumerate(aList))
+>>> List2
+[(0, 'hello'), (1, 'world'), (2, '!')]
+>>>
+

@@ -1,0 +1,84 @@
+文件开头指定Python解释器：#!/usr/local/bin/python 或 #!/usr/bin/env python
+
+数据结构：
+	Numbers			123, 3.14										int(), float()		-- immutable, number      
+	Strings			'spam', "Bob's", 'Bob\'s'						str()				-- immutable, sequence
+	Lists			[1,[2,'three'],4], list(range(10))				list()				-- mutable, sequence
+	Dictionaries	{'food':'spam','taste':'yum'}, dict(hour=10)	dict()				-- mutable, mapping
+	Tuples			(1,'spam',4,'U'), tuple('spam')					tuple()				-- immutable, sequence
+	Files			open('eggs.txt')
+	Sets			set('abc'), {'a','b','c'}						set()				-- mutable
+	
+布尔值: True 和 False ；0，None，空sequence，空dictionary 作为False，其余作为True
+	
+取值：
+sequence[0]：-1表示最后一个数，以此类推
+sequence[1:3]：seq[start:end:step]，包含start，不包含end，step默认为1，start和end可省略表示开始和结尾如 seq[:]
+diction[key]：按键取值
+
+赋值：
+‘=’赋值，赋值即为变量定义
+All assignments are based on references (including function argument passing).
+mutable中成员可更改，immutable中成员不可更改，如 list('abc')[1]=2 可执行，'abc'[1]=2 不可执行
+diction[key]=value，改变旧键相应的值，或创建新键并赋值
+
+运算符：
+** 乘方
+and，or，not 逻辑运算
+in, not in 是否为成员
+支持 X < Y < Z 类型的比较
+sequece的加法表示合并，乘以整数表示重复
+
+数据结构相应方法：
+help()函数可查看说明
+str：S.split(); S.find('pa'); S.replace('pa','XYZ'); S.upper(); S.isalpha(); S.rstrip()
+list：L.append(4); L.extend([5,6]); L.insert(i,X); L.index(X); L.count(X); L.sort(); L.copy(); L.clear(); L.pop(i); L.remove(X); del L[i]; del L[i:j]
+dict：D.keys(); D.values(); D.items(); D.copy(); D.clear(); D.update(D2); D.get(key[,default]); D.pop(k[,d]); D.setdefault(k[,d]); D.popitem(); del D['a']
+
+
+控制语句：
+
+if test1:
+	statements1
+elif test2:			#Optional elifs
+	statements2
+else:               #Optional else
+	statements3
+	
+while test:
+	statements
+else:               #Optional else
+	statements      #Run if didn't exit loop with break
+	
+for target in object:      #Assign object items to target
+	statements
+else                       #Optional else
+	statements             #Run if didn't exit loop with break
+
+break：跳出循环体
+continue：跳出本次循环，进入下一次循环
+
+常用函数：
+len(sequence)
+sorted(sequence)
+range([start,]stop[,step])
+
+定义函数：
+def funcname(argement,...):
+	statements
+
+交互输入输出：
+输入函数：raw_input([message])，得到字符串；input([message])，得到表达式的值
+输出语句：print '...' ， print '...%10.3f...%s...' % (3.1415,'a') ，默认输出后换行，末尾加 , 表示不换行
+
+文件输入输出：
+输入：
+aList=open('路径/文件名').readlines()，得到文件行list
+输出：
+aFile=open('路径/文件名','w')
+方法一：print >> aFile, '...'
+方法二：aFile.write(aString); aFile.writelines(aList)
+aFile.close()
+
+载入其他模块：
+import module

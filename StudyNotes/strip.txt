@@ -1,0 +1,42 @@
+string.strip
+用于移除字符串头尾指定的字符（默认为空格）
+语法：
+str.strip([chars])
+参数
+chars -- 移除字符串头尾指定的字符。
+返回值
+返回移除字符串头尾指定的字符生成的新字符串。
+
+s为字符串，rm为要删除的字符序列
+s.strip(rm)        删除s字符串中开头、结尾处，位于 rm删除序列的字符
+s.lstrip(rm)       删除s字符串中开头处，位于 rm删除序列的字符
+s.rstrip(rm)      删除s字符串中结尾处，位于 rm删除序列的字符
+
+1. 当rm为空时，默认删除空白符（包括'\n', '\r',  '\t',  ' ')
+>>> a=' Hello World '
+>>> a
+'\tHello World '
+>>> a.strip()
+'Hello World'
+>>> x='\t\r\npython'
+>>> x
+'\t\r\npython'
+>>> x.strip()
+'python'
+>>>
+
+2.这里的rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉。
+>>> a='123abc'
+>>> a.strip('21')
+'3abc'
+>>> a
+'123abc'
+>>> a.strip('12')
+'3abc'
+>>>
+
+只移除字符串头尾指定的字符，中间部分不会移除：
+>>> str = "0000000this is string 0000example....wow!!!0000000"
+>>> str.strip('0')
+'this is string 0000example....wow!!!'
+>>>

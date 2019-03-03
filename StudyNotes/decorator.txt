@@ -1,0 +1,303 @@
+有如下的一个函数，
+def sum(x, y):
+    print ("x+y:", x+y
+我们需要在每次调用 sum 函数的时候打印日志，但是我们并不希望修改sum函数。
+
+
+Solution 1:
+最 brute-force 的方法，定义一个包裹函数, 在这个包裹函数的内部调用sum 函数（包裹函数和 sum 函数最好具有相同的参数，和返回类型）
+def wrapper1(x, y):
+    print ("calling %s" % sum.__name__)
+    return sum(x, y)
+
+wrapper1(1, 2)
+
+所有之前需要调用sum函数的地方，改用新的包裹函数。这样可行，但是加入另外一个函数 func, 同样需要进行日志，我们就得重新写另外一个包裹函数。显然，有更好的方法。
+
+
+Solution 2:
+包裹函数和被包裹函数最好具有相同的参数，和返回类型。 如何能够只写一个包裹函数，它可以包裹任意接口的函数呢？
+def wrapper2(*args, **kw):
+    print ("calling %s" % sum.__name__)
+    return sum(*args, **kw)
+	
+wrapper2(1, 2)
+
+python中函数的参数非常灵活，(*args, **kw)可以匹配任意类型的参数。上述的包裹函数 wrapper2 已经可以接受任意的参数类型，并且返回值即为sum 的返回值。但是，其实还没有完全达到要求，wrapper2的内部调用了函数sum, 
+如果我们需要包裹另一个func函数，那么sum就必须修改。
+
+
+Solution 3:
+我们容易想到把 sum 作为函数的参数传入，但是这使得函数的接口变了。
+def wrapper3(func, *args, **kw):
+    print ("calling %s" % func.__name__)
+ 	return func(*args, **kw)
+
+wrapper3(sum, 1, 2)
+
+
+Solution 4:
+另一种做法是: 在wrapper外面再包裹一层函数，仅仅用于传入函数 sum
+def log(func):
+    def wrapper(*args, **kw):
+	    print ("calling %s" % func.__name__)
+	    return func(*args, **kw)
+    return wrapper
+	
+log(sum)(1, 2)
+
+大家可能还是不满意，能不能还是通过 sum(1, 2) 来调用包含 log 信息的版本呢？ 当然可以！
+sum = log(sum)(1, 2)
+python中的函数名相当于 C++ 中的指针，可以通过赋值，将 sum 指向 log(sum)
+
+
+Ultimate Solution:
+终极版本：通过 python 的 @语法
+def log(func):
+    def wrapper(*args, **kw):
+	    print ("calling %s" % func.__name__)
+        return func(*args, **kw)
+	return wrapper 
+	
+@log
+def sum(x, y):
+    print ("x+y:", x+y)
+	
+sum(1, 2) 
+
+@log
+def func(x):
+    print (xfunc(1))
+任意一个函数，需要打印log信息, 仅仅需要在函数的定义前加 @log，等价于sum = log(sum)
+
+请编写一个decorator，能在函数调用的前后打印出'begin call'和'end call'的日志。
+def log2(func):
+    def wrapper(*args, **kw):
+	    print "begin call"
+        res = func(*args, **kw)
+        print "end call"
+        return res
+	return wrapper
+	
+	
+	
+	
+>>> def decorator(func):
+...     print("this is wrapper")
+...     def wrapper():
+...         func()
+...     return wrapper
+...
+>>> @decorator
+... def func():
+...     print('This is func')
+...
+this is wrapper
+>>> func()
+This is func
+>>> print(func.__name__)
+wrapper
+>>>
+
+其实解释器执行了这么一句:func = decorator(func).这就是装饰器最本质最核心的东西了.
+func作为参数传递给decorator,decorator的返回值是wrapper()，赋给func.就这样被修饰的函数func其实已经变成了另一个函数wrapper了.
+
+1.你想写这样一个装饰器：
+@decorator
+def func(user):
+    print("this",user," func")
+
+要怎么写呢？
+
+我们来看看func = decorator(func).
+第一步:我们知道decorator(func)应该返回一个函数.所以有如下代码.
+def decorator(func):
+    def wrapper():
+        pass
+    return wrapper    
+
+第二步:装饰器是用来装饰函数的,你不能把原有的要装饰的func(user)的功能给弄没了啊.所以我们补全wrapper()
+def decorator(func):
+    def wrapper(user):
+        print("start decorate",user)
+        func(user)
+    return wrapper
+
+这时候你要装饰的func(user)就变成wrapper(user)啦.
+>>> def decorator(func):
+	def wrapper(user):
+		print("start decorate",user)
+		func(user)
+	return wrapper
+
+>>> @decorator
+def func(user):
+	print("this",user,"func")
+
+>>> func('xzy')
+start decorate xzy
+this xzy func
+>>> 
+
+2.一个装饰器想装饰好几个函数.
+要装饰的函数的参数你不确定有几个.可以用*args,**args表示任意参数就可以了.
+def decorator(func):
+    def wrapper(*args,**kw):
+        print("start decorate")
+        func(*args)
+    return wrapper
+
+@decorator
+def func(user):
+    print(user)
+
+@decorator
+def func2(user1,user2):
+    print(user1,"and",user2)
+	
+>>> func('xzy')
+start decorate
+xzy
+>>> func2('xzy','who')
+start decorate
+xzy and who
+>>>
+
+3.多个装饰器修饰一个函数
+@decorator0
+@decorator1
+def func():
+    print("this is func")
+
+实际上解释器执行func = decorator0(decorator1(func))
+可以分两步：
+1.decorator1(func)返回一个函数
+2.decorator0()接受一个函数作为参数,并返回一函数.
+所以就有了：
+#func = decorator0(decorator1(func))
+
+def decorator0(func):
+    def wrapper():
+        print("decorator0!")
+        func()
+    return wrapper
+
+def decorator1(func):
+    def wrapper():
+        print("decorator1!")
+        func()
+    return wrapper
+
+@decorator0
+@decorator1
+def func():
+    print("this is func")
+
+>>> print(func.__name__)
+wrapper
+>>> func()
+decorator0!
+decorator1!
+this is func
+>>> 
+
+4.装饰器带参数
+@decorator(num)
+def func(user):
+    print(user)
+
+实际上解释器执行func = decorator(num)(func)
+也就是说你可以认为1.decorator(num)返回一个函数.2.返回的函数的类型是：以func为参数,返回值是一个函数.
+所以第一步:
+def decorator(num):
+    def wrapper():
+        pass
+    return wrapper
+
+第二步：
+def decorator(num):
+    def wrapper(func):
+        def wrapper2(user):
+            print(num)
+            func(user)
+        return wrapper2
+    return wrapper
+	
+>>> def decorator(num):
+	def wrapper(func):
+		def wrapper2(user):
+			print(num)
+			func(user)
+		return wrapper2
+	return wrapper
+
+>>> @decorator(4)
+def func(user):
+	print (user)
+	
+>>> func('xzy')
+4
+xzy
+
+
+
+
+装饰器
+在代码运行期间动态增加功能的方式，称之为“装饰器”（Decorator）。本质上，decorator就是一个返回函数的高阶函数。关键字wrapper
+
+
+
+
+Python的装饰器的英文名叫Decorator，当你看到这个英文名的时候，你可能会把其跟Design Pattern里的Decorator搞混了，其实这是完全不同的两个东西。虽然好像，
+他们要干的事都很相似——都是想要对一个已有的模块做一些“修饰工作”，所谓修饰工作就是想给现有的模块加上一些小装饰（一些小功能，这些小功能可能好多模块都会用到），
+但又不让这个小装饰（小功能）侵入到原有的模块中的代码里去。
+
+Python的Decorator在使用上，就是在方法名前面加一个@XXX注解来为这个方法装饰一些东西。Python使用了一种相对于Decorator Pattern和Annotation来说非常优雅的方法，
+这种方法不需要你去掌握什么复杂的OO模型或是Annotation的各种类库规定，完全就是语言层面的玩法：一种函数式编程的技巧。
+
+函数式编程的“描述你想干什么，而不是描述你要怎么去实现”的编程方式。 
+>>> def hello(fn):
+...     def wrapper():
+...         print("Hello,%s" % fn.__name__)
+...         fn()
+...         print("goodbye,%s" % fn.__name__)
+...     return wrapper
+...
+>>> @hello
+... def foo():
+...     print ("i am foo")
+...
+>>> foo()
+Hello,foo
+i am foo
+goodbye,foo
+>>>
+
+被解释成了：foo = hello(foo)
+
+你可以看到如下的东西：
+1）函数foo前面有个@hello的“注解”，hello就是我们前面定义的函数hello
+2）在hello函数中，其需要一个fn的参数（这就用来做回调的函数）
+3）hello函数中返回了一个inner函数wrapper，这个wrapper函数回调了传进来的fn，并在回调前后加了两条语句。
+
+Decorator 的本质
+这就是把一个函数当参数传到另一个函数中，然后再回调。但是，我们需要注意，那里还有一个赋值语句，把decorator这个函数的返回值赋值回了原来的func。
+根据《函数式编程》中的first class functions中的定义的，你可以把函数当成变量来使用，所以，decorator必需得返回了一个函数出来给func，
+这就是所谓的higher order function 高阶函数，不然，后面当func()调用的时候就会出错。
+
+>>> def fuck(fn):
+...     print ("fuck %s!" % fn.__name__[::-1].upper())
+...
+>>> @fuck
+... def wfg():
+...     pass
+...
+fuck GFW!
+>>>
+
+
+
+
+今天来讨论一下装饰器。装饰器是一个很著名的设计模式，经常被用于有切面需求的场景，较为经典的有插入日志、性能测试、事务处理等。装饰器是解决这类问题的绝佳设计，
+有了装饰器，我们就可以抽离出大量函数中与函数功能本身无关的雷同代码并继续重用。概括的讲，装饰器的作用就是为已经存在的对象添加额外的功能。
+

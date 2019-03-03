@@ -1,0 +1,806 @@
+python
+1、解释性
+	一个用编译性语言比如C或C++写的程序可以从源文件（即C或C++语言）转换到一个你的计算机使用的语言（二进制代码，即0和1）。这个过程通过编译器和不同的标记、选项完成。
+当你运行你的程序的时候，连接/转载器软件把你的程序从硬盘复制到内存中并且运行。
+	而Python语言写的程序不需要编译成二进制代码。你可以直接从源代码运行程序。在计算机内部，Python解释器把源代码转换成称为字节码的中间形式，然后再把它翻译成计算机使
+用的机器语言并运行。事实上，由于你不再需要担心如何编译程序，如何确保连接转载正确的库等等，所有这一切使得使用Python更加简单。由于你只需要把你的Python程序拷贝到另外
+一台计算机上，它就可以工作了，这也使得你的Python程序更加易于移植。
+
+2、面向对象
+	Python即支持面向过程的编程也支持面向对象的编程。在面向过程的语言中，程序是由过程或仅仅是可重用代码的函数构建起来的。在面向对象的语言中，程序是由数据和功能组合
+而成的对象构建起来的。与其他主要的语言如C++和Java相比，Python以一种非常强大又简单的方式实现面向对象编程。
+
+3、可扩展性
+	如果你需要你的一段关键代码运行得更快，你可以把你的部分程序用C或C++编写，然后在你的Python程序中使用它们。
+
+4、可嵌入性
+	你可以把Python嵌入你的C/C++程序，从而向你的程序用户提供脚本功能。
+
+5、综合Perl存档网络：巨大的Perl模块集	http://www.cpan.org/
+
+6、对于Python来说，程序、脚本或者软件都是指同一个东西
+
+7、如果你需要某个Python函数或语句的快速信息帮助，那么你可以使用内建的help功能。尤其在你使用带提示符的命令行的时候，它十分有用。比如，运行help(str)——这会显示str类的
+帮助。str类用于保存你的程序使用的各种文本（字符串）。按q退出帮助。
+
+8、help('print')：在“print”上使用了引号，那样Python就可以理解我是希望获取关于“print”的帮助而不是想要它打印东西
+
+9、在Python中有4种类型的数——整数、长整数(大一些的整数)、浮点数和复数。
+
+10、Python中使用字符串
+	● 使用单引号（'）
+	你可以用单引号指示字符串，就如同'Quote me on this'这样。所有的空白，即空格和制表符都照原样保留。
+	● 使用双引号（"）
+	在双引号中的字符串与单引号中的字符串的使用完全相同，例如"What's your name?"。
+	● 使用三引号（'''或"""）
+	利用三引号，你可以指示一个多行的字符串。你可以在三引号中自由的使用单引号和双引号。例如：
+	'''This is a multi-line string. This is the first line.
+	This is the second line.
+	"What's your name?," I asked.
+	He said "Bond, James Bond."
+	'''
+	● 转义符
+	你肯定不会用'What's your name?'来指示字符串What's your name?，因为Python会弄不明白这个字符串从何处开始，何处结束。所以，你需要指明单引号而不是字符串的结尾。
+	可以通过转义符来完成这个任务。你用\'来指示单引号——注意这个反斜杠。现在你可以把字符串表示为'What\'s your name?'。你可以用转义符\\来指示反斜杠本身。
+	值得注意的一件事是，在一个字符串中，行末的单独一个反斜杠表示字符串在下一行继续，而不是开始一个新的行。例如：
+	"This is the first sentence.\
+	This is the second sentence."
+	等价于"This is the first sentence. This is the second sentence."
+	● 自然字符串
+	如果你想要指示某些不需要如转义符那样的特别处理的字符串，那么你需要指定一个自然字符串。自然字符串通过给字符串加上前缀r或R来指定。
+	例如r"Newlines are indicated by \n"。
+	● Unicode字符串
+	Unicode是书写国际文本的标准方法。在你处理文本文件的时候使用Unicode字符串，特别是当你知道这个文件含有用非英语的语言写的文本。你需要有一个支持Unicode的编辑器。
+	类似地，Python允许你处理Unicode文本——你只需要在字符串前加上前缀u或U。例如，u"This is a Unicode string."。
+	● 字符串是不可变的
+	一旦你创造了一个字符串，你就不能再改变它了
+	● 按字面意义级连字符串
+	如果你把两个字符串按字面意义相邻放着，他们会被Python自动级连。例如，'What\'s''your name?'会被自动转为"What's your name?"。
+给C/C++程序员的注释
+	在Python中没有专门的char数据类型。确实没有需要有这个类型
+给Perl/PHP程序员的注释
+	单引号和双引号字符串是完全相同的——它们没有在任何方面有不同。
+给正则表达式用户的注释
+	一定要用自然字符串处理正则表达式。否则会需要使用很多的反斜杠。例如，后向引用符可以写成'\\1'或r'\1'。
+
+11、变量只是你的计算机中存储信息的一部分内存
+
+12、变量是标识符的例子。 标识符是用来标识某样东西的名字。在命名标识符的时候，你要遵循这些规则：
+	● 标识符的第一个字符必须是字母表中的字母（大写或小写）或者一个下划线（‘ _ ’）。
+	● 标识符名称的其他部分可以由字母（大写或小写）、下划线（‘ _ ’）或数字（0-9）组成。
+	● 标识符名称是对大小写敏感的。例如，myname和myName不是一个标识符。
+	● 有效 标识符名称的例子有i、__my_name、name_23和a1b2_c3。
+	● 无效 标识符名称的例子有2things、this is spaced out和my-name。
+
+13、变量可以处理不同类型的值，称为数据类型。基本的类型是数和字符串
+
+14、使用赋值运算符（=）把一个字面意义上的常数(or 字符串)赋给变量。一行称为一个语句。语句声明需要做某件事情，这个地方把变量名i与值连接在一起。
+	用print语句打印i的值，就是把变量的值打印在屏幕上。
+给C/C++程序员的注释
+	使用变量时只需要给它们赋一个值。不需要声明或定义数据类型。
+
+15、如果你想要在一个物理行中使用多于一个逻辑行，那么你需要使用分号（;）来特别地标明这种用法。分号表示一个逻辑行/语句的结束。例如：
+	i = 5
+	print i
+	与下面这个相同：
+	i = 5;
+	print i;
+	同样也可以写成：
+	i = 5; print i;
+	甚至可以写成：
+	i = 5; print i
+	
+16、下面是一个在多个物理行中写一个逻辑行的例子。它被称为明确的行连接。
+	s = 'This is a string. \
+	This continues the string.'
+	print s
+	它的输出：
+	This is a string. This continues the string.
+	类似地，
+	print \
+	i
+	与如下写法效果相同：
+	print i
+	
+17、有时候，有一种暗示的假设，可以使你不需要使用反斜杠。这种情况出现在逻辑行中使用了圆括号、方括号或波形括号的时候。这被称为暗示的行连接。
+
+18、在逻辑行首的空白（空格和制表符）用来决定逻辑行的缩进层次，从而用来决定语句的分组。同一层次的语句必须有相同的缩进。每一组这样的语句称为一个块。
+
+19、不要混合使用制表符和空格来缩进，因为这在跨越不同的平台的时候，无法正常工作。我强烈建议你在每个缩进层次使用单个制表符或两个或四个空格。
+	选择这三种缩进风格之一。更加重要的是，选择一种风格，然后一贯地使用它，即只使用这一种风格。
+	
+20、一个表达式可以分解为运算符和操作数
+	运算符的功能是完成某件事，它们由如+这样的符号或者其他特定的关键字表示。运算符需要数据来进行运算，这样的数据被称为操作数。
+	
+21、Page34
+
+22、x的按位翻转是-(x+1)
+	所有比较运算符返回1表示真，返回0表示假。这分别与特殊的变量True和False等价。比较可以被任意连接：3 < 5 < 7返回True。
+	如果两个操作数都是数字，它们首先被转换为一个共同的类型。否则，它总是返回False。
+	如果x为False，x and y返回False，否则它返回y的计算值。Python不会计算y，因为它知道这个表达式的值肯定是False（因为x是False）。这个现象称为短路计算。
+	x = True; y = False; x or y返回True。短路计算在这里也适用。
+	
+23、Python的运算符优先级，从最低的优先级（最松散地结合）到最高的优先级（最紧密地结合）。
+	在一个表达式中，Python会首先计算表中较下面的运算符。在表中列在同一行的运算符具有相同优先级
+	建议使用圆括号来分组运算符和操作数，以便能够明确地指出运算的先后顺序，使程序尽可能地易读
+	运算符描述
+	lambda 							Lambda表达式
+	or 								布尔“或”
+	and 							布尔“与”
+	not x 							布尔“非”
+	in，not in 						成员测试
+	is，is not 						同一性测试
+	<，<=，>，>=，!=，==			比较
+	| 								按位或
+	^ 								按位异或
+	& 								按位与
+	<<，>> 							移位
+	+，- 							加法与减法
+	*，/，%							乘法、除法与取余
+	+x，-x 							正负号
+	~x 								按位翻转
+	** 								指数
+	x.attribute 					属性参考
+	x[index] 						下标
+	x[index:index] 					寻址段
+	f(arguments...) 				函数调用
+	(experession,...) 				绑定或元组显示
+	[expression,...] 				列表显示
+	{key:datum,...} 				字典显示
+	'expression,...' 				字符串转换
+	
+24、运算符通常由左向右结合，即具有相同优先级的运算符按照从左向右的顺序计算
+	赋值运算符那样的运算符是由右向左结合的
+	
+25、对于raw_input函数来说是一个字符串。我们通过int把这个字符串转换为整数。事实上，int是一个类，不过你想在对它所需了解的只是它把一个字符串转换为一个整数（假设这
+	个字符串含有一个有效的整数文本信息）。
+
+26、注意if语句在结尾处包含一个冒号——我们通过它告诉Python下面跟着一个语句块。elif和else从句都必须在逻辑行结尾处有一个冒号，下面跟着一个相应的语句块（当然还包括正
+	确的缩进）
+	elif和else部分是可选的
+给C/C++程序员的注释
+	在Python中没有switch语句。你可以使用if..elif..else语句来完成同样的工作（在某些场合，使用字典会更加快捷。）
+	
+27、只要在一个条件为真的情况下，while语句允许你重复执行一块语句。while语句是所谓循环语句的一个例子。while语句有一个可选的else从句。
+	#!/usr/bin/python
+	# Filename: while.py
+
+	number = 23
+	running = True #区分大小写，true：错！
+
+	while running:
+	  guess = int(raw_input('Enter an integer : '))
+
+	  if guess == number:
+	    running = False
+	
+	当while循环条件变为False的时候，else块才被执行——这甚至也可能是在条件第一次被检验的时候。如果while循环有一个else从句，它将始终被执行，除非你的while循环将永远
+	循环下去不会结束！
+给C/C++程序员的注释
+	记住，你可以在while循环中使用一个else从句。	
+
+28、内建的range函数生成数的序列。提供两个数，range返回一个序列的数。这个序列从第一个数开始到第二个数为止。例如，range(1,5)给出序列[1, 2, 3, 4]。默认地，range的步
+	长为1。如果我们为range提供第三个数，那么它将成为步长。例如，range(1,5,2)给出[1,3]。记住，range向上延伸到第二个数，即它不包含第二个数。
+
+29、for..in是另外一个循环语句，它在一序列的对象上递归，即逐一使用队列中的每个项目。for..in循环对于任何种类的由任何对象组成的序列都适用。
+	else部分是可选的。如果包含else，它总是在for循环结束后执行一次，除非遇到break语句
+给C/C++/Java/C#程序员的注释
+	Python的for循环从根本上不同于C/C++的for循环。
+	C#程序员会注意到Python的for循环与C#中的foreach循环十分类似。
+	Java程序员会注意到它与Java 1.5中的for (int i : IntArray)相似。
+	在C/C++中，如果你想要写for (int i = 0; i < 5; i++)，那么用Python，你写成for i in range(0,5)。
+	
+30、break语句是用来终止循环语句的，即哪怕循环条件没有称为False或序列还没有被完全递归，也停止执行循环语句。
+	一个重要的注释是，如果你从for或while循环中终止，任何对应的循环else块将不执行。
+	#!/usr/bin/python
+	# Filename: break.py
+
+	while True:
+	  s = raw_input('Enter something : ')
+	  if s == 'quit':
+	    break
+	  print 'Length of the string is', len(s)
+
+	在这个程序中，我们反复地取得用户地输入，然后打印每次输入地长度
+	Enter something:	use Python!
+	Length of the string is 12
+	
+31、continue语句被用来告诉Python跳过当前循环块中的剩余语句，然后继续进行下一轮循环。continue语句对于for循环也有效
+
+32、函数是重用的程序段。它们允许你给一块语句一个名称，然后你可以在你的程序的任何地方使用这个名称任意多次地运行这个语句块。这被称为调用函数。
+	函数通过def关键字定义。def关键字后跟一个函数的标识符名称，然后跟一对圆括号。圆括号之中可以包括一些变量名，该行以冒号结尾。接下来是一块语句，它们是函数体。
+	若函数不使用任何参数，则在圆括号中没有声明任何变量。参数对于函数而言，只是给函数的输入，以便于我们可以传递不同的值给函数，然后得到相应的结果。
+	参数在函数定义的圆括号对内指定，用逗号分割。
+	
+33、局部变量
+	当你在函数定义内声明变量的时候，它们与函数外具有相同名称的其他变量没有任何关系，即变量名称对于函数来说是局部的。这称为变量的作用域。
+	所有变量的作用域是它们被定义的块，从它们的名称被定义的那点开始。
+	x是函数的局部变量。所以，当我们在函数内改变x的值的时候，在主块中定义的x不受影响。
+	
+34、如果你想要为一个定义在函数外的变量赋值，那么你就得告诉Python这个变量名不是局部的，而是全局的。
+	我们使用global语句完成这一功能。没有global语句，是不可能为定义在函数外的变量赋值的。
+	使用global语句可以清楚地表明变量是在外面的块定义的。你可以使用同一个global语句指定多个全局变量。例如global x, y, z。
+	
+35、默认参数值
+	对于一些函数，你可能希望它的一些参数是可选的，如果用户不想要为这些参数提供值的话，这些参数就使用默认值。这个功能借助于默认参数值完成。你可以在函数定义的形参
+	名后加上赋值运算符（=）和默认值，从而给形参指定默认参数值。
+	默认参数值应该是一个参数。更加准确的说，默认参数值应该是不可变的
+	重要
+	只有在形参表末尾的那些参数可以有默认参数值，即你不能在声明函数形参的时候，先声明有默认值的形参而后声明没有默认值的形参。
+	这是因为赋给形参的值是根据位置而赋值的。例如，def func(a, b=5)是有效的，但是def func(a=5, b)是无效的。
+	
+36、关键参数
+	如果你的某个函数有许多参数，而你只想指定其中的一部分，那么你可以通过命名来为这些参数赋值——这被称作关键参数——我们使用关键字而不是位置来给函数指定实参。
+	这样做有两个优势 ——一，由于我们不必担心参数的顺序，使用函数变得更加简单了。二、假设其他参数都有默认值，我们可以只给我们想要的那些参数赋值。
+	
+37、return语句用来从一个函数返回即跳出函数。我们也可选从函数返回一个值
+	没有返回值的return语句等价于return None。None是Python中表示没有任何东西的特殊类型。例如，如果一个变量的值为None，可以表示它没有值。
+	除非你提供你自己的return语句，每个函数都在结尾暗含有return None语句。
+	
+38、pass语句在Python中表示一个空的语句块
+
+39、Python有一个很奇妙的特性，称为文档字符串，简称docstrings。是一个重要的工具，它帮助你的程序文档更加简单易懂，可以在程序运行的时候，从函数恢复文档字符串！
+	#!/usr/bin/python
+	#Filename : func_doc.py
+	
+	def printMax(x,y):
+	'''Prints the maximum of two numbers.
+	
+	The two values must be integers.'''
+	x = int(x) # convert to integers, if possible
+	y = int(y)
+	
+	if x > y:
+	  print x, 'is maximum'
+	else:
+	  print y, 'is maximum'
+	
+	printMax(3,5)
+	print printMax.__doc__
+	
+	在函数的第一个逻辑行的字符串是这个函数的 文档字符串 。注意，DocStrings也适用于模块和类
+	文档字符串的惯例是一个多行字符串，首行以大写字母开始，句号结尾。第二行是空行，第三行开始是详细的描述。 强烈建议你在你的函数中使用文档字符串时遵循这个惯例。
+	你可以使用__doc__（注意双下划线）调用printMax函数的文档字符串属性（属于函数的名称）。请记住Python把每一样东西都作为对象，包括这个函数。
+	自动化工具也可以以同样的方式从你的程序中提取文档。强烈建议你对你所写的任何正式函数编写文档字符串。pydoc命令与help()类似地使用DocStrings
+	
+40、模块基本上就是一个包含了所有你定义的函数和变量的文件。为了在其他程序中重用模块，模块的文件名必须以.py为扩展名。
+	模块可以从其他程序输入以便利用它的功能。这也是我们使用Python标准库的方法。
+	#!/usr/bin/python
+	#Filename : using_sys.py
+	
+	import sys
+	
+	print 'The command line arguments are:'
+	for i in sys.argv:
+	  print i
+	
+	print '\n\nThe PYTHONPATH is', sys.path, '\n'
+
+	
+	[] $ python using_sys.py we are arguments
+	The command line arguments are:
+	using_sys.py
+	we
+	are
+	arguments
+	
+	
+	The PYTHONPATH is ['/home/xzy/python', '/usr/lib64/python27.zip', '/usr/lib64/python2.7', '/usr/lib64/python2.7/plat-linux2', '/usr/lib64/python2.7/lib-tk', '/usr/lib64/python2.7/lib-old', '/usr/lib64/python2.7/lib-dynload', '/usr/lib64/python2.7/site-packages', '/usr/lib64/python2.7/site-packages/gtk-2.0', '/usr/lib/python2.7/site-packages'] 
+
+	利用import语句输入sys模块。sys模块包含了与Python解释器和它的环境有关的函数。
+	当Python执行import sys语句的时候，它在sys.path变量中所列目录中寻找sys.py模块。如果找到了这个文件，这个模块的主块中的语句将被运行，然后这个模块将能够被你使用。
+	注意，初始化过程仅在我们第一次输入模块的时候进行。另外，“sys”是“system”的缩写。
+	sys模块中的argv变量通过使用点号指明——sys.argv——这种方法的一个优势是这个名称不会与任何在你的程序中使用的argv变量冲突。另外，它也清晰地表明了这个名称是sys模块
+	的一部分。
+	sys.argv变量是一个字符串的列表。特别地，sys.argv包含了命令行参数的列表，即使用命令行传递给你的程序的参数。
+	这里，当我们执行python using_sys.py we are arguments的时候，我们使用python命令运行using_sys.py模块，后面跟着的内容被作为参数传递给程序。Python为我们把它存储
+	在sys.argv变量中。
+	记住，脚本的名称总是sys.argv列表的第一个参数。所以，在这里，'using_sys.py'是sys.argv[0]、'we'是sys.argv[1]、'are'是sys.argv[2]以及'arguments'是sys.argv[3]。
+	注意，Python从0开始计数，而非从1开始。
+	sys.path包含输入模块的目录名列表。我们可以观察到sys.path的第一个字符串是空的——这个空的字符串表示当前目录也是sys.path的一部分，这与PYTHONPATH环境变量是相同的。
+	这意味着你可以直接输入位于当前目录的模块。否则，你得把你的模块放在sys.path所列的目录之一。
+	
+41、字节编译的.pyc文件
+	输入一个模块相对来说是一个比较费时的事情，所以Python做了一些技巧，以便使输入模块更加快一些。一种方法是创建字节编译的文件，这些文件以.pyc作为扩展名。
+	字节编译的文件与Python变换程序的中间状态有关。当你在从别的程序输入这个模块的时候，.pyc文件是十分有用的——它会快得多，因为一部分输入模块所需的处理已经完成了。
+	另外，这些字节编译的文件也是与平台无关的。
+	
+42、如果想避免每次输入argv变量时打sys.，可以使用from sys import argv语句。如果想输入所有sys模块使用的名字，可以使用from sys import *语句。这对于所有模块都适用。
+	一般说来，应该避免使用from..import而使用import语句，因为这样可以使你的程序更加易读，也可以避免名称的冲突。
+	
+43、每个模块都有一个名称，在模块中可以通过语句来找出模块的名称。这在一个场合特别有用——当一个模块被第一次输入的时候，这个模块的主块将被运行。
+	假如只想在程序本身被使用的时候运行主块，而在它被别的模块输入的时候不运行主块，可以通过模块的__name__属性完成。
+	
+44、#!/usr/bin/python
+	# Filename: using_name.py
+	if __name__ == '__main__':
+	  print 'This program is being run by itself'
+	else:
+	  print 'I am being imported from another module'
+
+	$ python using_name.py
+	This program is being run by itself
+	$ python
+	>>> import using_name
+	I am being imported from another module
+	
+45、记住模块应该被放置在我们输入它的程序的同一个目录中，或者在sys.path所列目录之一。我们使用相同的点号来使用模块的成员
+
+46、可以使用内建的dir函数来列出模块定义的标识符。标识符有函数、类和变量。
+	当你为dir()提供一个模块名的时候，它返回模块定义的名称列表。如果不提供参数，它返回当前模块中定义的名称列表。
+
+	$ python
+	>>> dir()
+	['__builtins__', '__doc__', '__name__', '__package__']
+
+	$ python
+	>>> import sys
+	>>> dir(sys) # get list of attributes for sys module
+	['__displayhook__', '__doc__', '__excepthook__', '__name__', '__package__', '__stderr__', '__stdin__', '__stdout__', '_clear_type_cache', '_current_frames', '_debugmallocstats', '_getframe', '_mercurial', 'api_version', 'argv', 'builtin_module_names', 'byteorder', 'call_tracing', 'callstats', 'copyright', 'displayhook', 'dont_write_bytecode', 'exc_clear', 'exc_info', 'exc_type', 'excepthook', 'exec_prefix', 'executable', 'exit', 'flags', 'float_info', 'float_repr_style', 'getcheckinterval', 'getdefaultencoding', 'getdlopenflags', 'getfilesystemencoding', 'getprofile', 'getrecursionlimit', 'getrefcount', 'getsizeof', 'gettrace', 'hexversion', 'long_info', 'maxint', 'maxsize', 'maxunicode', 'meta_path', 'modules', 'path', 'path_hooks', 'path_importer_cache', 'platform', 'prefix', 'ps1', 'ps2', 'py3kwarning', 'pydebug', 'setcheckinterval', 'setdlopenflags', 'setprofile', 'setrecursionlimit', 'settrace', 'stderr', 'stdin', 'stdout', 'subversion', 'version', 'version_info', 'warnoptions']
+	>>> dir() # get list of attributes for current module
+	['__builtins__', '__doc__', '__name__', '__package__', 'sys']
+	>>> a = 5 # create a new variable 'a'
+	>>> dir()
+	['__builtins__', '__doc__', '__name__', '__package__', 'a', 'sys']
+	>>> del a # delete/remove a name
+	>>> dir()
+	['__builtins__', '__doc__', '__name__', '__package__', 'sys']
+	
+	在输入的sys模块上使用dir，它包含一个庞大的属性列表。
+	不给dir函数传递参数而使用它——默认地，它返回当前模块的属性列表。输入的模块同样是列表的一部分。
+	我们定义一个新的变量a并且给它赋值，然后检验dir，观察到在列表中增加了以上相同的值。使用del语句删除当前模块中的变量/属性，变化再一次反映在dir的输出中。
+	关于del的一点注释——这个语句在运行后被用来删除一个变量/名称。你将无法再使用变量——它就好像从来没有存在过一样。
+	
+47、模块的用处在于它能为你在别的程序中重用它提供的服务和功能。Python附带的标准库就是这样一组模块的例子。
+
+48、数据结构——可以处理一些数据的结构。用来存储一组相关数据。在Python中有三种内建的数据结构——列表、元组和字典。
+
+49、列表：list是处理一组有序项目的数据结构，即你可以在一个列表中存储一个序列的项目。在Python中，每个项目之间用逗号分割
+	列表中的项目包括在方括号中，这样Python就知道是在指明一个列表。一旦创建了一个列表，可以添加、删除或是搜索列表中的项目。列表是可改变的数据类型。
+	
+50、列表是使用对象和类的一个例子。当你使用变量i并给它赋值的时候，比如赋整数5，你可以认为你创建了一个类（类型）int的对象（实例）i。
+	类也有方法，即仅仅为类而定义地函数。仅仅在你有一个该类的对象的时候，你才可以使用这些功能。
+	Python为list类提供了append方法，这让你在列表尾添加一个项目。例如mylist.append('an item')列表mylist中增加那个字符串。注意，使用点号来使用对象的方法。
+	一个类也有域，仅仅为类而定义的变量。仅仅在你有一个该类的对象的时候，你才可以使用这些变量/名称。类也通过点号使用，例如mylist.field。
+	
+51、可以在列表中添加任何种类的对象 包括数甚至其他列表。
+	使用了for..in循环在列表中各项目间递归。列表也是一个序列
+	在print语句的结尾使用了逗号来消除每个print语句自动打印的换行符
+	使用append方法在列表中添加了一个项目
+	打印列表只需简单地把列表传递给print语句
+	使用列表的sort方法来对列表排序。这个方法影响列表本身，而不是返回一个修改后的列表——这与字符串工作的方法不同。这就是我们所说的列表是可变的而字符串是不可变的。
+	使用del语句把元素从列表中删除。记住，Python从0开始计数
+	
+52、元组：元组和字符串一样是不可变的，即你不能修改元组。
+	元组通过圆括号中用逗号分割的项目定义。元组通常用在使语句或用户定义的函数能够安全地采用一组值的时候，即被使用的元组的值不会改变。
+
+53、len函数可以用来获取元组的长度。这表明元组也是一个序列。
+	元组之内的元组不会失去它的身份
+	通过一对方括号来指明某个项目的位置从而来访问元组中的项目，就像我们对列表的用法一样。这被称作索引运算符。
+	含有0个或1个项目的元组。一个空的元组由一对空的圆括号组成，如myempty = ()。然而，含有单个元素的元组就不那么简单。必须在第一个（唯一一个）项目后跟一个逗号，
+	这样Python才能区分元组和表达式中一个带圆括号的对象。如果你想要的是一个包含项目2的元组的时候，你应该指明singleton = (2 , )。
+给Perl程序员的注释
+	列表中的列表不会失去它的身份，即列表不会像Perl中那样被打散。元组中的元组，列表中的元组，元组中的列表都是如此。只要是Python，它们就只是用另一个对象存储的对象。
+
+54、元组最通常的用法是用在打印语句中
+
+55、print语句可以使用跟着%符号的项目元组的字符串。这些字符串具备定制功能。定制让输出满足某种特定格式。定制可以是%s表示字符串或%d表示整数。元组必须按照相同的顺序
+	来对应这些定制。
+	Python所做的是把元组中的每个项目转换成字符串并且用字符串的值替换定制的位置
+	print的这个用法使得编写输出变得简单，避免了许多字符串操作。也避免了一直以来使用的逗号。
+	可以只使用%s定制，让Python来替你处理剩余的事情。这种方法对数同样奏效。然而，你可能希望使用正确的定制，从而可以避免多一层的检验程序是否正确。
+	使用一个定制，后面跟着%符号后的单个项目——没有圆括号。这只在字符串中只有一个定制的时候有效。
+	
+56、字典类似于你通过联系人名字查找地址和联系人详细情况的地址簿，即，我们把键（名字）和值（详细情况）联系在一起。
+	注意，键必须是唯一的，就像如果有两个人恰巧同名的话，你无法找到正确的信息。
+	注意，你只能使用不可变的对象（比如字符串）来作为字典的键，但是你可以把不可变或可变的对象作为字典的值。你应该只使用简单的对象作为键。
+	键值对在字典中以这样的方式标记：d = {key1 : value1, key2 : value2 }。注意键/值对用冒号分割，而各个对用逗号分割，所有都包括在花括号中。
+	字典中的键/值对是没有顺序的。如果你想要一个特定的顺序，那么你应该在使用前自己对它们排序
+	字典是dict类的实例/对象
+	
+57、使用索引操作符指定键，从而使用键/值对。
+	使用索引操作符寻址一个键并为它赋值，增加了一个新的键/值对
+	使用del语句删除键/值对。只需要指明字典和用索引操作符指明要删除的键，然后把它们传递给del语句。执行这个操作的时候，无需知道那个键所对应的值。
+	使用字典的items方法，使用字典中的每个键/值对。这会返回一个元组的列表，其中每个元组都包含一对项目——键与对应的值。
+	使用in操作符来检验一个键/值对是否存在，或者使用dict类的has_key方法。
+	关键字参数与字典。如果换一个角度看待在函数中使用的关键字参数，已经使用了字典了！你在函数定义的参数列表中使用的键/值对。
+	当你在函数中使用变量的时候，它只不过是使用一个字典的键（这在编译器设计的术语中被称作符号表）
+	
+58、列表、元组和字符串都是序列
+	序列的两个主要特点是索引操作符和切片操作符。索引操作符让我们可以从序列中抓取一个特定项目。切片操作符让我们能够获取序列的一个切片，即一部分序列。
+	
+59、使用索引取得序列中的单个项目：下标操作。每当你用方括号中的一个数来指定一个序列的时候，Python会为你抓取序列中对应位置的项目。
+	记住，Python从0开始计数。list[0]抓取第一个项目元素。
+	索引可以是负数，位置是从序列尾开始计算的。list[-1]表示序列的最后一个元素
+	切片操作符是序列名后跟一个方括号，方括号中有一对可选的数字，并用冒号分割。这与索引操作符十分相似。记住数是可选的，而冒号是必须的。
+	切片操作符返回的序列从开始位置开始，刚好在结束位置之前结束。即开始位置是包含在序列切片中的，而结束位置被排斥在切片外
+	list[:]返回整个序列的拷贝。
+	可以用负数做切片。负数用在从序列尾开始计算的位置。例如，list[:-1]会返回除了最后一个项目外包含所有项目的序列切片。
+	序列的神奇之处在于你可以用相同的方法访问元组、列表和字符串。
+	
+60、当你创建一个对象并给它赋一个变量的时候，这个变量仅仅引用那个对象，而不是表示这个对象本身！
+	变量名指向你计算机中存储那个对象的内存。这被称作名称到对象的绑定。
+	
+61、如果想要复制一个列表或者序列或者其他不是如整数那样的简单对象，那么必须使用切片操作符来取得拷贝。
+给Perl程序员的注释
+	列表的赋值语句不创建拷贝。得使用切片操作符来建立序列的拷贝。
+	
+62、字符串也是对象，同样具有方法。这些方法可以完成包括检验一部分字符串和去除空格在内的各种工作。
+
+63、startwith方法用来测试字符串是否以给定字符串开始。
+	in操作符用来检验一个给定字符串是否为另一个字符串的一部分。
+	find方法用来找出给定字符串在另一个字符串中的位置，或者返回-1以表示找不到子字符串。
+	str类也有以一个作为分隔符的字符串join序列的项目的整洁的方法，它返回一个生成的大字符串。
+	
+64、想要一个可以为我的所有重要文件创建备份的程序
+	1. 需要备份的文件和目录由一个列表指定。
+	2. 备份应该保存在主备份目录中。
+	3. 文件备份成一个zip文件。
+	4. zip存档的名称是当前的日期和时间。
+	5. 我们使用标准的zip命令，它通常默认地随Linux/Unix发行版提供。Windows用户可以使用Info-Zip程序。注意你可以使用任何地存档命令，只要它有命令行界面就可以了，那
+	   样的话我们可以从我们的脚本中传递参数给它。
+	
+65、backup_ver1
+	目前的日期和时间，使用time.strftime()函数获得
+	time.strftime()函数需要我们在上面的程序中使用的那种定制。%Y会被无世纪的年份所替代。%m会被01到12之间的一个十进制月份数替代，其他依次类推
+	使用加法操作符来级连字符串，即把两个字符串连接在一起返回一个新的字符串。
+	zip命令有一些选项和参数。-q选项用来表示zip命令安静地工作。-r选项表示zip命令对目录递归地工作，即它包括子目录以及子目录中的文件。两个选项可以组合成缩写形式-qr。
+	选项后面跟着待创建的zip归档的名称，然后再是待备份的文件和目录列表。字符串join方法把source列表转换为字符串。
+	利用os.system函数在shell系统中运行命令。
+给Windows用户的注释
+	可以把source列表和target目录设置成任何文件和目录名，但是在Windows中你得小心一些。问题是Windows把反斜杠（\）作为目录分隔符，而Python用反斜杠表示转义符！
+	所以，你得使用转义符来表示反斜杠本身或者使用自然字符串。例如，使用'C:\\Documents'或r'C:\Documents'而不是'C:\Documents'——你在使用一个不知名的转义符\D！
+
+66、backup_ver2
+	使用 时间 作为文件名，而当前的 日期 作为目录名，存放在主备份目录中。这样做的一个优势是你的备份会以等级结构存储，因此它就更加容易管理了。
+	另外一个优势是文件名的长度也可以变短。
+	还有一个优势是采用各自独立的文件夹可以帮助你方便地检验你是否在每一天创建了备份，因为只有在你创建了备份，才会出现那天的目录
+	
+	使用os.exists函数检验在目录中是否有以...作为名称的目录。
+	使用os.mkdir函数创建目录。
+	os.sep变量的用法——这会根据你的操作系统给出目录分隔符，即在Linux、Unix下它是'/'，在Windows下它是'\\'，而在Mac OS下它是':'。
+	使用os.sep而非直接使用字符，会使我们的程序具有移植性，可以在上述这些系统下工作。
+	
+67、backup_ver3
+	使用物理行尾的反斜杠来表示逻辑行在下一物理行继续
+	
+68、使用raw_input函数得到用户注释，通过len函数检验用户是否确实输入了什么东西。如果用户只是按了回车，那么就如之前那样继续操作。
+
+69、可以在程序中包含交互程度——你可以用-v选项来使你的程序更具交互性。
+	使文件和目录能够通过命令行直接传递给脚本：通过sys.argv列表来获取它们，然后我们可以使用list类提供的extend方法把它们加到source列表中去。
+	使用tar命令替代zip命令。这样做的一个优势是在你结合使用tar和gzip命令的时候，备份会更快更小
+	
+70、tar = 'tar -cvzf %s %s -X /home/xzy/excludes.txt' % (target, ' '.join(srcdir))
+	-c表示创建一个归档。
+	-v表示交互，即命令更具交互性。
+	-z表示使用gzip滤波器。
+	-f表示强迫创建归档，即如果已经有一个同名文件，它会被替换。
+	-X表示含在指定文件名列表中的文件会被排除在备份之外。例如，你可以在文件中指定*~，从而不让备份包括所有以~结尾的文件。
+重要
+	最理想的创建归档方法是分别使用zipfile和tarfile。它们是Python标准库的一部分。使用这些库避免了使用os.system这个不推荐使用的函数，它容易引发严重的错误。
+	
+71、编写一个软件的各个环节，概括如下：
+	1. 什么（分析）
+	2. 如何（设计）
+	3. 编写（实施）
+	4. 测试（测试与调试）
+	5. 使用（实施或开发）
+	6. 维护（优化）
+重要
+	进行分析与设计。开始时实施一个简单的版本。对它进行测试与调试。以确信它如预期那样工作。再增加任何你想要的特性，根据需要一次次重复这个编写－测试－使用的周期。
+	记住“软件是长出来的，而不是建造的”。
+	
+72、根据操作数据的函数或语句块来设计程序的。被称为 面向过程的 编程。
+	把数据和功能结合起来，用称为对象的东西包裹起来组织程序的方法。称为 面向对象的 编程。
+	在大多数时候你可以使用过程性编程，但是有些时候当你想要编写大型程序或是寻求一个更加合适的解决方案的时候，你就得使用面向对象的编程技术。
+	
+	类和对象是面向对象编程的两个主要方面。类创建一个新类型，而对象这个类的 实例 。这类似于你有一个int类型的变量，这存储整数的变量是int类的实例（对象）。
+	
+给C/C++/Java/C#程序员的注释
+	注意，即便是整数也被作为对象（属于int类）。这和C++把整数纯粹作为类型是不同的。C#和Java 1.5程序员会熟悉这个概念，因为它类似与 封装与解封装 的概念。
+	对象可以使用普通的 属于 对象的变量存储数据。属于一个对象或类的变量被称为域。对象也可以使用 属于 类的函数来具有功能。这样的函数被称为类的方法。
+	这些术语帮助我们把它们与孤立的函数和变量区分开来。域和方法可以合称为类的属性。
+	域有两种类型——属于每个实例/类的对象或属于类本身。它们分别被称为实例变量和类变量。
+	类使用class关键字创建。类的域和方法被列在一个缩进块中。
+	
+73、类的方法与普通的函数只有一个区别——必须有一个额外的第一个参数名称，但是在调用这个方法的时候你不为这个参数赋值，Python会提供这个值。
+	这个特别的变量指对象本身，按照惯例它的名称是self。
+	
+	虽然你可以给这个参数任何名称，但是 强烈建议 你使用self这个名称
+	使用一个标准的名称有很多优点——你的程序读者可以迅速识别它，如果使用self的话，还有些IDE（集成开发环境）也可以帮助你
+	
+给C++/Java/C#程序员的注释
+	Python中的self等价于C++中的self指针和Java、C#中的this参考。
+
+	假如你有一个类称为MyClass和这个类的一个实例MyObject。当你调用这个对象的方法MyObject.method(arg1, arg2)的时候，这会由Python自动转为
+	MyClass.method(MyObject, arg1,arg2)——这就是self的原理了。如果你有一个不需要参数的方法，你还是得给这个方法定义一个self参数。
+	
+74、#!/usr/bin/python
+	# Filename: simplestclass.py
+	class Person:
+	  pass # An empty block
+	
+	p = Person()
+	print p
+
+	$ python simplestclass.py
+	<__main__.Person instance at 0xf6fcb18c>
+	
+	使用class语句后跟类名，创建了一个新的类。这后面跟着一个缩进的语句块形成类体。
+	使用类名后跟一对圆括号来创建一个对象/实例。为了验证，打印了这个变量的类型。它告诉我们我们已经在__main__模块中有了一个Person类的实例。
+	可以注意到存储对象的计算机内存地址也打印了出来。Python可以在任何空位存储对象。
+
+75、类/对象可以拥有像函数一样的方法，这些方法与函数的区别只是一个额外的self变量。即使函数没有任何参数，但仍然在函数定义时有self
+
+76、__init__方法
+	在Python的类中有很多方法的名字有特殊的重要意义。
+	__init__方法在类的一个对象被建立时，马上运行。这个方法可以用来对你的对象做一些 初始化 。注意，这个名称的开始和结尾都是双下划线。
+	
+77、#!/usr/bin/python
+	# Filename: class_init.py
+	class Person:
+	  def __init__(self, name):
+	    self.name = name
+	  def sayHi(self):
+	    print 'Hello, my name is', self.name
+	
+	p = Person('Swaroop')
+	p.sayHi()
+	# This short example can also be written as Person('Swaroop').sayHi()
+	
+	$ python class_init.py
+	Hello, my name is Swaroop
+	
+	这里，把__init__方法定义为取一个参数name（以及普通的参数self）。在这个__init__里，只是创建一个新的域，也称为name。
+	注意它们是两个不同的变量，尽管它们有相同的名字。点号使我们能够区分它们。
+	最重要的是，我们没有专门调用__init__方法，只是在创建一个类的新实例的时候，把参数包括在圆括号内跟在类名后面，从而传递给__init__方法。这是这种方法的重要之处。
+	
+给C++/Java/C#程序员的注释
+	__init__方法类似于C++、C#和Java中的 constructor 。
+	
+78、类的变量 由一个类的所有对象（实例）共享使用。只有一个类变量的拷贝，所以当某个对象对类的变量做了改动的时候，这个改动会反映到所有其他的实例上。
+	对象的变量 由类的每个对象/实例拥有。每个对象有自己对这个域的一份拷贝，即它们不是共享的，在同一个类的不同实例中，虽然对象的变量有相同的名称，但是是互不相关的。
+	
+79、#!/usr/bin/python
+	#Filename : objvar.py
+	
+	class Person:
+	  '''Represents a person.'''
+	  population = 0
+	
+	  def __init__(self,name):
+		'''Initializes the person's data.'''
+		self.name = name
+		print '(Initializing %s)' % self.name
+	
+		# When this person is created, he/she
+		# adds to the population
+		Person.population += 1
+	
+	  def __del__(self):
+		'''I am dying.'''
+		print '%s says bye.' % self.name
+	
+		Person.population -= 1
+	
+		if Person.population == 0:
+		  print 'I am the last one.'
+		else:
+		  print 'There are still %d people left.' % Person.population
+	
+	  def sayHi(self):
+		'''Greeting by the person.
+	
+		Really, that's all it does.'''
+		print 'Hi, my name is %s.' % self.name
+	
+  	  def howMany(self):
+		'''Prints the current population.'''
+		if Person.population == 1:
+		  print 'I am the only person here.'
+		else:
+		  print 'We have %d persons here.' % Person.population
+	
+	swaroop = Person('Swaroop')
+	swaroop.sayHi()
+	swaroop.howMany()
+	
+	kalam = Person('Abdul Kalam')
+	kalam.sayHi()
+	kalam.howMany()
+
+	swaroop.sayHi()
+	swaroop.howMany()
+
+	$ python objvar.py 
+	(Initializing Swaroop)
+	Hi, my name is Swaroop.
+	I am the only person here.
+	(Initializing Abdul Kalam)
+	Hi, my name is Abdul Kalam.
+	We have 2 persons here.
+	Hi, my name is Swaroop.
+	We have 2 persons here.
+	Abdul Kalam says bye.
+	There are still 1 people left.
+	Swaroop says bye.
+	I am the last one.
+
+	说明类与对象的变量的本质。population属于Person类，因此是一个类的变量。name变量属于对象（它使用self赋值）因此是对象的变量。
+	__init__方法用一个名字来初始化Person实例。self.name的值根据每个对象指定，这表明了它作为对象的变量的本质。
+	你只能使用self变量来参考同一个对象的变量和方法。这被称为 属性参考 。
+	docstring对于类和方法同样有用。我们可以在运行时使用Person.__doc__和Person.sayHi.__doc__来分别访问类与方法的文档字符串。
+	方法__del__，在对象消逝的时候被调用。对象消逝即对象不再被使用，它所占用的内存将返回给系统作它用。
+	当对象不再被使用时，__del__方法运行
+给C++/Java/C#程序员的注释
+	Python中所有的类成员（包括数据成员）都是公共的 ，所有的方法都是有效的。只有一个例外：如果你使用的数据成员名称以双下划线前缀 比如__privatevar，Python的名称
+管理体系会有效地把它作为私有变量。这样就有一个惯例，如果某个变量只想在类或对象中使用，就应该以单下划线前缀。而其他的名称都将作为公共的，可以被其他类/对象使用。
+记住这只是一个惯例，并不是Python所要求的（与双下划线前缀不同）。
+	同样，注意__del__方法与destructor的概念类似。
+	
+80、面向对象的编程带来的主要好处之一是代码的重用，实现这种重用的方法之一是通过继承机制。继承完全可以理解成类之间的 类型和子类型 关系。
+
+81、为了使用继承，我们把基本类的名称作为一个元组跟在定义类时的类名称之后。
+	基本类的__init__方法专门使用self变量调用，这样我们就可以初始化对象的基本类部分。这一点十分重要——Python不会自动调用基本类的constructor，你得亲自专门调用它。
+	在方法调用之前加上类名称前缀，然后把self变量及其他参数传递给它。
+	Python总是首先查找对应类型的方法。如果它不能在导出类中找到对应的方法，它才开始到基本类中逐个查找。基本类是在类定义的时候，在元组之中指明的。
+	一个术语的注释——如果在继承元组中列了一个以上的类，那么它就被称作 多重继承。
+
+82、让你的程序与用户交互：从用户那里得到输入，然后打印一些结果。可以分别使用raw_input和print语句来完成。对于输出，可以使用多种多样的str（字符串）类。
+	例如，使用rjust方法来得到一个按一定宽度右对齐的字符串。
+	
+83、另一个常用的输入/输出类型是处理文件。创建、读和写文件的能力是许多程序所必需的
+	通过创建一个file类的对象来打开一个文件，分别使用file类的read、readline或write方法来恰当地读写文件。对文件的读写能力依赖于在打开文件时指定的模式。
+	最后，当完成对文件的操作的时候，调用close方法来告诉Python我们完成了对文件的使用。
+	
+84、文件模式可以为读模式（'r'）、写模式（'w'）或追加模式（'a'）
+	在一个循环中，使用readline方法读文件的每一行。这个方法返回包括行末换行符的一个完整行。所以，当一个空的字符串被返回的时候，即表示文件末已经到达了，停止循环。
+	从文件读到的内容已经以换行符结尾，在print语句上使用逗号来消除自动换行。
+	
+85、Python提供一个标准的模块，称为pickle。使用它你可以在一个文件中储存任何Python对象，之后你又可以把它完整无缺地取出来。这被称为 持久地 储存对象。
+	还有另一个模块称为cPickle，它的功能和pickle模块完全相同，只不过它是用C语言编写的，因此要快得多（比pickle快1000倍）。你可以使用它们中的任一个，
+	记住，我们把这两个模块都简称为pickle模块。
+	
+86、#!/usr/bin/python
+	#Filename : pickling.py
+	
+	import cPickle as p
+	#import pickle as p
+	
+	shoplistfile = 'shoplist.data'
+	# the name of the file where we will store the object
+	
+	shoplist = ['apple','mango','carrot']
+	
+	# Write to the file
+	f = file(shoplistfile,'w')
+	p.dump(shoplist,f) # dump the object to a file
+	f.close()
+	
+	del shoplist # remove the shoplist
+	
+	# Read back from the storage
+	f = file(shoplistfile)
+	storedlist = p.load(f)
+	print storedlist
+	注意使用了import..as语法。这是一种便利方法，以便于使用更短的模块名称。在程序的其余部分，简单地把这个模块称为p。
+	为了在文件里储存一个对象，首先以写模式打开一个file对象，然后调用储存器模块的dump函数，把对象储存到打开的文件中。这个过程称为 储存 。
+	接下来，使用pickle模块的load函数的返回来取回对象。这个过程称为 取储存 。
+	
+87、可以使用try..except语句来处理异常。把通常的语句放在try-块中，而把错误处理语句放在except-块中。
+
+88、把所有可能引发错误的语句放在try块中，然后在except从句/块中处理所有的错误和异常。except从句可以专门处理单一的错误或异常，或者一组包括在圆括号内的错误/异常。
+	如果没有给出错误或异常的名称，它会处理 所有的 错误和异常。对于每个try从句，至少都有一个相关联的except从句。
+	如果某个错误或异常没有被处理，默认的Python处理器就会被调用。它会终止程序的运行，并且打印一个消息。
+	还可以让try..catch块关联上一个else从句。当没有异常发生的时候，else从句将被执行。
+	
+89、可以使用raise语句 引发 异常。还得指明错误/异常的名称和伴随异常 触发的 异常对象。可以引发的错误或异常应该分别是一个Error或Exception类的直接或间接导出类。
+
+90、在读一个文件的时候，希望在无论异常发生与否都关闭文件，可以使用finally块来完成。在一个try块下，你可以同时使用except从句和finally块，需要把一个嵌入另外一个。
+
+91、在程序运行的时候，按Ctrl-c中断/取消程序
+
+92、Python程序运行时，不是在交互模式下，sys.argv列表中总是至少有一个项目，就是当前的程序名称，作为sys.argv[0]（由于Python从0开始计数）。其他的命令行参数在这之后。
+
+93、使用sys.exit函数退出正在运行的程序
+
+94、sys模块中有sys.stdin、sys.stdout和sys.stderr，分别对应你的程序的标准输入、标准输出和标准错误流。
+
+95、os模块包含普遍的操作系统功能。使用os.sep可以取代操作系统特定的路径分割符
+
+96、● os.name字符串指示你正在使用的平台。比如对于Windows，它是'nt'，而对于Linux/Unix用户，它是'posix'。
+	● os.getcwd()函数得到当前工作目录，即当前Python脚本工作的目录路径。
+	● os.getenv()和os.putenv()函数分别用来读取和设置环境变量。
+	● os.listdir()返回指定目录下的所有文件和目录名。
+	● os.remove()函数用来删除一个文件。
+	● os.system()函数用来运行shell命令。
+	● os.linesep字符串给出当前平台使用的行终止符。例如，Windows使用'\r\n'，Linux使用'\n'而Mac使用'\r'。
+	● os.path.split()函数返回一个路径的目录名和文件名。
+		>>> os.path.split('/home/xzy/python/poem.txt')
+		('/home/xzy/python', 'poem.txt')
+	● os.path.isfile()和os.path.isdir()函数分别检验给出的路径是一个文件还是目录。类似地，os.path.exists()函数用来检验给出的路径是否真地存在。
+	
+97、特殊的方法都被用来模仿某个行为。例如，如果你想要为你的类使用x[key]这样的索引操作（就像列表和元组一样），那么你只需要实现__getitem__()方法就可以了。
+	表 一些特殊的方法
+	名称								说明
+	__init__(self,...)					这个方法在新建对象恰好要被返回使用之前被调用。
+	__del__(self)						恰好在对象要被删除之前调用。
+	__str__(self)						在我们对对象使用print语句或是使用str()的时候调用。
+	__lt__(self,other)					当使用 小于 运算符（<）的时候调用。类似地，对于所有的运算符（+，>等等）都有特殊的方法。
+	__getitem__(self,key)				使用x[key]索引操作符的时候调用。
+	__len__(self) 						对序列对象使用内建的len()函数的时候调用。
+	
+98、每一个语句块是通过它的缩进层次与其它块区分开来的。然而如果语句块只包含一句语句，那么可以在条件语句或循环语句的同一行指明它。
+	单个语句被直接使用而不是作为一个独立的块使用。但是强烈建议不要使用这种缩略方法
+	>>> flag=True
+	>>> if flag: print 'Yes'
+	... 
+	Yes
+	>>>
+	在使用交互模式的Python解释器时，它会通过恰当地改变提示符来帮助你输入语句。
+	输入关键字if之后，Python解释器把提示符改变为...以示语句还未结束。按回车键确认语句已经完整。然后Python完成整个语句的执行，返回原来的提示符并且等待下一句输入。
+	
+99、在函数中接收元组和列表
+	当要使函数接收元组或字典形式的参数的时候，有一种特殊的方法，它分别使用*和**前缀。这种方法在函数需要获取可变数量的参数的时候特别有用。
+	>>> def powersum(power,*args):
+	...   '''Return the sum of each argument raised to specified power.'''
+	...   total=0
+	...   for i in args:
+	...     total += pow(i,power)
+	...   return total
+	... 
+	>>> powersum(2,3,4)
+	25
+	>>> powersum(2,10)
+	100
+	由于在args变量前有*前缀，所有多余的函数参数都会作为一个元组存储在args中。如果使用的是**前缀，多余的参数则会被认为是一个字典的键/值对。
+
+100、lambda语句被用来创建新的函数对象，并且在运行时返回它们。
+	#!/usr/bin/python
+	#Filename : lambda.py
+	
+	def make_repeater(n):
+	  return lambda s: s*n
+	
+	twice = make_repeater(2)
+	
+	print twice('word')
+	print twice(5)
+
+	$ python lambda.py 
+	wordword
+	10
+	使用make_repeater函数在运行时创建新的函数对象，并且返回它。lambda语句用来创建函数对象。
+	本质上，lambda需要一个参数，后面仅跟单个表达式作为函数体，而表达式的值被这个新建的函数返回。注意，即便是print语句也不能用在lambda形式中，只能使用表达式。
+	
+101、exec语句用来执行储存在字符串或文件中的Python语句。例如，我们可以在运行时生成一个包含Python代码的字符串，然后使用exec语句执行这些语句。
+	>>> exec 'print "Hello World"'
+	Hello World
+	eval语句用来计算存储在字符串中的有效Python表达式。
+	>>> eval('2*3')
+	6
+	
+102、assert语句用来声明某个条件是真的。如果非常确信某个使用的列表中至少有一个元素，并且在它非真的时候引发一个错误，那么assert语句是应用在这种情形下的理想语句。
+	当assert语句失败的时候，会引发一个AssertionError。
+	>>> mylist=['item']
+	>>> assert len(mylist) >= 1
+	>>> mylist.pop()
+	'item'
+	>>> assert len(mylist) >= 1
+	Traceback (most recent call last):
+	  File "<stdin>", line 1, in <module>
+	AssertionError
+	>>>
+	
+103、repr函数用来取得对象的规范字符串表示。反引号（也称转换符）可以完成相同的功能。注意，在大多数时候有eval(repr(object)) == object。
+	>>> i=[]
+	>>> i.append('item')
+	>>> `i`
+	"['item']"
+	>>> repr(i)
+	"['item']"
+	>>> eval(repr(i))
+	['item']
+	>>> 
+	
+	repr函数和反引号用来获取对象的可打印的表示形式。你可以通过定义类的__repr__方法来控制你的对象在被repr函数调用的时候返回的内容。

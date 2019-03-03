@@ -1,0 +1,336 @@
+如何判断一个函数是否是一个特殊的 generator 函数？可以利用 isgeneratorfunction 判断：
+清单 5. 使用 isgeneratorfunction 判断
+>>> from inspect import isgeneratorfunction 
+>>> isgeneratorfunction(fib) 
+True
+
+要注意区分 fib 和 fib(5)，fib 是一个 generator function，而 fib(5) 是调用 fib 返回的一个 generator
+
+>>> import types 
+>>> isinstance(fib, types.GeneratorType) 
+False 
+>>> isinstance(fib(5), types.GeneratorType) 
+True
+
+fib 是无法迭代的，而 fib(5) 是可迭代的：
+>>> from collections import Iterable 
+>>> isinstance(fib, Iterable) 
+False 
+>>> isinstance(fib(5), Iterable) 
+True
+
+每次调用 fib 函数都会生成一个新的 generator 实例，各实例互不影响
+
+在一个 generator function 中，如果没有 return，则默认执行至函数完毕，如果在执行过程中 return，则直接抛出 StopIteration 终止迭代。
+
+如果直接对文件对象调用read()，会导致不可预测的内存占用。好方法是利用固定长度的缓冲区来不断读取文件内容。通过 yield不再需要编写读文件的迭代类，就可以实现文件读取：
+
+清单 6. 另一个 yield 的例子
+def read_file(fpath): 
+    BLOCK_SIZE = 1024 
+    with open(fpath, 'rb') as f: 
+    	while True: 
+    		block = f.read(BLOCK_SIZE) 
+    		if block: 
+    			yield block 
+    		else: 
+    			return
+
+yield是生成的意思，在Python中作为生成器理解，生成器的用处主要可以迭代，这样简化了很多运算模型。yield是一个表达式,是有返回值的。
+当一个函数中含有yield时,它不再是一个普通的函数,而是一个生成器.当该函数被调用时不会自动执行,而是暂停
+>>> def mygenerator():  
+...     print ('start...')  
+...     yield 5  
+...   
+>>> mygenerator()            //在此处调用,并没有打印出start...说明存在yield的函数没有被运行,即暂停  
+<generator object mygenerator at 0xb762502c>  
+>>> next(mygenerator())     //调用next()即可让函数运行.  
+start...  
+5  
+>>> 
+
+如一个函数中出现多个yield则next()会停止在下一个yield前
+>>> def fun2():  
+...     print ('first')  
+...     yield 5  
+...     print ('second')  
+...     yield 23  
+...     print ('end...')  
+...   
+>>> g1 = fun2()  
+>>> next(g1)             //第一次运行,暂停在yield 5               
+first  
+5  
+>>> next(g1)             //第二次运行,暂停在yield 23  
+second  
+23  
+>>> next(g1)             //第三次运行,由于之后没有yield,再次next()就会抛出错误  
+end...  
+Traceback (most recent call last):  
+  File "<stdin>", line 1, in <module>  
+StopIteration  
+>>>   
+
+send函数实质上与next()是相似的，区别是send是传递yield表达式的值进去，而next不能传递特定的值，只能传递None进去，因此可以认为next()和send(None)是相同的
+>>> def fun():  																				
+...     print ('start...')  																		
+...     m = yield 5  																					
+...     print (m)  																													
+...     print ('middle...')  																									
+...     d = yield 12  																									
+...     print (d)  																									
+...     print ('end...')  																									
+...   																									
+>>> m = fun()              //创建一个对象  								>>> m = fun()              //创建一个对象  											
+>>> next(m)               //会使函数执行到下一个yield前  				>>> m.send(None)               //会使函数执行到下一个yield前														
+start...  																start...  														
+5  																		5  														
+>>> m.send('message')      //利用send()传递值  							>>> next(m)      //利用send()传递值  														
+message                    //send()传递进来的   						None                    //send()传递进来的   														
+middle...  																middle...  														
+12  																	12  														
+>>> next(m)  															>>> next(m)  														
+None                       //可见next()返回值为空  						None                       //可见next()返回值为空  														
+end...  																end...  														
+Traceback (most recent call last):  									Traceback (most recent call last):  														
+  File "<stdin>", line 1, in <module>  									  File "<stdin>", line 1, in <module>  														
+StopIteration  															StopIteration  														
+
+
+
+
+迭代器iterables
+任何可以用 for in 来迭代读取的都是迭代容器，例如lists,strings,files.这些迭代器非常的便利，因为你可以想取多少便取多少，但是你得存储所有的值，
+其中很多值都完全没有必要每次都保持在内存中。
+
+Generators
+Generators(生成器)也是可迭代的，但是你每次只能迭代它们一次，因为不是所有的迭代器都被一直存储在内存中的，他们临时产生这些值：
+>>> mygenerator = (x*x for x in range(3))
+>>> for i in mygenerator:
+...    print(i)
+0
+1
+4
+生成器几乎和迭代器是相同的，除了符号[]变为()。但是你无法用两次，因为他们只生成一次：他们生成0然后丢弃，继续统计1，接着是4，一个接着一个。
+
+Yield
+Yield的用法有点像return,除了它返回的是一个生成器
+>>> def createGenerator():
+...    mylist = range(3)
+...    for i in mylist:
+...        yield i*i
+...
+>>> mygenerator = createGenerator() # create a generator
+>>> print(mygenerator) # mygenerator is an object!
+<generator object createGenerator at 0xb7555c34>
+>>> for i in mygenerator:
+...     print(i)
+0
+1
+4
+
+当函数将产生大量仅被读取一次的数据时,使用生成器将是十分有效的做法
+
+yield的精髓，要点：调用这个函数时，写在这个函数中的代码并没有真正的运行。这个函数仅仅只是返回一个生成器对象。然后，代码会在每次for使用生成器的时候run起来。
+
+当你的for第一次调用函数的时候，它生成一个生成器，并且在你的函数中运行该循环，直到它生成第一个值。然后每次调用都会运行循环并且返回下一个值，直到没有值返回为止。
+该生成器背认为是空的一旦该函数运行但是不再yield。之所以如此是因为该循环已经到达终点，或者是因为你再也不满足“if/else”的条件。
+
+Your code explained
+例子：
+生成器：
+# 这里你创建一个node对象的一个生成器生成方法
+def node._get_child_candidates(self, distance, min_dist, max_dist):
+
+  # 如果还有一个左子节点并且距离可以，返回下一个子节点
+  if self._leftchild and distance - max_dist < self._median:
+      yield self._leftchild
+
+  # 如果还有一个右子几点并且距离可以，返回下一个子节点
+  if self._rightchild and distance + max_dist >= self._median:
+      yield self._rightchild
+
+  # 如果方法运行到这里，生成器会被认为为空
+
+与前面不同的是，这个函数中没有for循环，但它依然可以用于迭代。
+node._get_child_candidates函数中有yield，所以它变成了一个迭代器，可以用于迭代。
+执行第一次迭代时（其实就是调用next()方法），如果有左节点并且距离满足要求，会执行第一个yield，这时会返回self._leftchild并完成第一个迭代。
+执行第二次迭代时，从第一个yield后面开始，如果有右节点并且距离满足要求，会执行第二个yield，这时会返回self._rightchild并完成第一个迭代。
+执行第三次迭代时，第二个yield后再无代码，捕获异常，退出迭代。
+  
+调用者:
+# 创建一个空的列表，一个包含当前候选对象引用的列表
+result, candidates = list(), [self]
+
+# 当前候选非空，循环candidates列表,只有一个元素。
+while candidates:
+
+    # 从候选列表取出最后一个元素作为当前节点
+    node = candidates.pop()
+
+    # 获取obj和当前节点距离
+    distance = node._get_dist(obj)
+
+    # 如果距离满足条件，将节点值加入结果列表
+    if distance <= max_dist and distance >= min_dist:
+        result.extend(node._values)
+
+    # 获取节点的子节点，加入到候选列表，回到循环开始, 这里使用了生成器
+    candidates.extend(node._get_child_candidates(distance, min_dist, max_dist))
+	# 注意这里extend会反复调用获取到所有生成器返回值
+	 
+return result
+
+extend函数的参数不仅仅支持array，只要它是一个迭代器就可以。它的原型是array.extend(iterable)
+
+这段代码包含一些非常机智的部分：
+    1. list的循环迭代部分，但是list在循环的同时又在拓展，这种方法是一种循环内嵌式的数据的相对简洁的方法，但是又存在着一些风险可能会导致死循环的情况。
+	在这个例子当中，candidates.extend(node._get_child_candidates(distance, min_dist, max_dist)) 耗尽所有的的生成器的值，但是当保持生成新的生成器对象，
+	并且依据之前生成器产生许多不同的值，由于它产生于不同的节点。
+    2. extend()方法是一个list 对象方法，它产生一个迭代器并且添加它的值到list当中去。
+	
+这样的做法好处是:
+1.你不需要重复读这些值
+2.你可能有海量的子节点，但是不希望将所有节点放入内存
+	
+Python不关心一个方法的参数是否是一个list.期待是一个迭代器所以它能够适用于strings,lists,tuples以及生成器。这被称为动态类型或者鸭子类型（duck typing）
+是python 如此酷的一大原因。
+
+生成器是一个特殊的程序，可以被用作控制循环的迭代行为。生成器类似于返回值为数组的一个函数，这个函数可以接收参数，可以被调用，但是，
+不同于一般的函数会一次性返回包含了所有数值的数组，生成器一次只产生一个值，这样消耗的内粗数量大大减少，而且允许调用函数可以很快的开始处理前几个返回值。
+
+python提供了两种基本的方式。
+生成器函数：也是用def来定义，利用关键字yield一次返回一个结果，阻塞，重新开始
+生成器表达式：返回一个对象，这个对象只有在需要的时候才产生结果
+
+生成器函数
+生成器函数随着时间的推移生成了一个数值队列。一般的函数在执行完毕之后会返回一个值然后退出，但是生成器函数会自动挂起，然后重新拾起继续执行，
+他会利用yield关键字关起函数，给调用者返回一个值，同时保留了当前的足够多的状态，可以使函数继续执行。生成器和迭代协议是密切相关的，
+可迭代的对象都有一个__next()__成员方法,这个方法要么返回迭代的下一项，要么引起异常结束迭代。
+为了支持迭代协议，拥有yield语句的函数被编译为生成器，这类函数被调用时返回一个生成器对象，返回的对象支持迭代接口，即成员方法__next()__继续从中断处执行执行。
+
+# codes
+def create_counter(n):
+    print ("create counter")
+    while True:
+        yield n
+        print ('increment n')
+        n += 1
+
+cnt = create_counter(2)
+print (cnt)
+print (next(cnt))
+print (next(cnt))
+print (next(cnt))
+
+# output
+<generator object create_counter at 0x0000000001D141B0>
+create counter
+2
+increment n
+3
+increment n
+4
+
+在create_counter函数中出现了关键字yield，预示着这个函数每次只产生一个结果值，这个函数返回一个生成器（通过第一行输出可以看出来），用来产生连续的n值
+在创造生成器实例的时候，只需要像普通函数一样调用就可以，但是这个调用却不会执行这个函数，这个可以通过输出看出来
+next()函数将生成器对象作为自己的参数，在第一次调用的时候，他执行了create_counter()函数到yield语句，返回产生的值2
+我们重复的调用next（）函数，每次他都会从上次被挂起的地方开始执行，直到再次遇到了yield关键字
+
+def cube(n):
+    for i in range(n):
+        yield i ** 3
+
+for i in cube(5):
+    print (i)
+
+#output
+0
+1
+8
+27
+64
+
+从理解函数的角度出发我们可以将yield类比为return，但是功能确实完全不同，在for循环中，会自动遵循迭代规则，每次调用next()函数
+
+生成器表达式：
+生成器表达式来自于迭代和列表解析的组合，生成器表达式和列表解析类似，但是他使用尖括号而不是方括号括起来的。
+# 生成器表达式
+>>> (x ** 3 for x in range(5))
+<generator object <genexpr> at 0x000000000315F678>
+>>> # 两者之间转换
+>>> list(x ** 3 for x in range(5))
+[0, 1, 8, 27, 64]
+就操作而言，生成器表如果使用大量的next()函数会显得十分不方便，for循环会自动出发next函数，所以可以按下面方式使用：
+>>> for n in (x ** 3 for x in range(5)):
+    print('%s, %s' % (n, n * n))
+0, 0
+1, 1
+8, 64
+27, 729
+64, 4096
+
+通常的for...in...循环中，in后面是一个数组，这个数组就是一个可迭代对象，类似的还有链表，字符串，文件。
+它的缺陷是所有数据都在内存中，如果有海量数据的话将会非常耗内存。
+生成器是可以迭代的，但只可以读取它一次。因为用的时候才生成。比如 mygenerator = (x*x for x in range(3))，注意这里用到了()，它就不是数组，而上面的例子是[]。
+我理解的生成器(generator)能够迭代的关键是它有一个next()方法，工作原理就是通过重复调用next()方法，直到捕获一个异常。可以用上面的mygenerator测试。
+带有 yield 的函数不再是一个普通函数，而是一个生成器generator，可用于迭代，工作原理同上。
+yield 是一个类似 return 的关键字，迭代一次遇到yield时就返回yield后面的值。重点是：下一次迭代时，从上一次迭代遇到的yield后面的代码开始执行。
+简要理解：yield就是 return 返回一个值，并且记住这个返回的位置，下次迭代就从这个位置后开始。
+带有yield的函数不仅仅只用于for循环中，而且可用于某个函数的参数，只要这个函数的参数允许迭代参数。比如array.extend函数，它的原型是array.extend(iterable)。
+send(msg)与next()的区别在于send可以传递参数给yield表达式，这时传递的参数会作为yield表达式的值，而yield的参数是返回给调用者的值。
+——换句话说，就是send可以强行修改上一个yield表达式值。比如函数中有一个yield赋值，a = yield 5，第一次迭代到这里会返回5，a还没有赋值。第二次迭代时，使用.send(10)，
+那么，就是强行修改yield 5表达式的值为10，本来是5的，那么a=10
+send(msg)与next()都有返回值，它们的返回值是当前迭代遇到yield时，yield后面表达式的值，其实就是当前迭代中yield后面的参数。
+第一次调用时必须先next()或send(None)，否则会报错，send后之所以为None是因为这时候没有上一个yield(根据第8条)。可以认为，next()等同于send(None)。
+
+#encoding:UTF-8  
+def yield_test(n):  
+    for i in range(n):  
+        yield call(i)  
+        print("i=",i)  
+    #做一些其它的事情      
+    print("do something.")      
+    print("end.")  
+
+def call(i):  
+    return i*2  
+
+#使用for循环  
+for i in yield_test(5):  
+    print(i,",")
+>>>   
+0 ,  
+i= 0  
+2 ,  
+i= 1  
+4 ,  
+i= 2  
+6 ,  
+i= 3  
+8 ,  
+i= 4  
+do something.  
+end.  
+>>>
+理解的关键在于：下次迭代时，代码从yield的下一跳语句开始执行。
+
+>>> def g():
+...     print ("1")
+...     x = yield 'hello'
+...     print ('2','x=',x)
+...     y = 5+(yield x)
+...     print ('3','y=',y)
+...
+>>> f=g()
+>>> next(f)
+1
+'hello'
+>>> f.send(5)
+2 x= 5
+5
+>>> f.send(2)
+3 y= 7
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+StopIteration

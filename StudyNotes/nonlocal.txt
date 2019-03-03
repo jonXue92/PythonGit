@@ -1,0 +1,301 @@
+全局变量和别名
+Python里只有2种作用域：全局作用域和局部作用域。全局作用域是指当前代码所在模块的作用域，局部作用域是指当前函数或方法所在的作用域。
+Python 3.x引入了nonlocal关键字，可以用于标识外部作用域的变量。
+
+在Python中，当引用一个变量的时候，对这个变量是按找本地作用域(Local)当前作用域局部变量、嵌套作用域(Enclosing function locals)外层作用域变量、
+全局作用域(Global)当前模块中的全局变量、内置作用域(builtins模块)python内置变量	的顺序来进行的，即所谓的LEGB规则。 
+
+然而当在一个函数内部为一个变量赋值时，并不是按照上面所说LEGB规则来首先找到变量，之后为该变量赋值。在Python中，在函数中为一个变量赋值时，有下面这样一条规则:
+“当在函数中给一个变量名赋值是(而不是在一个表达式中对其进行引用)，Python总是创建或改变本地作用域的变量名，除非它已经在那个函数中被声明为全局变量. ”
+
+一 global
+global关键字用来在函数或其他局部作用域中使用全局变量。适用于函数内部修改全局变量的值，如果不修改全局变量也可以不使用global关键字
+
+>>> gcount=0
+>>> def global_test():
+...     print (gcount)
+...
+>>> global_test()
+0
+>>> def global_counter():
+...     global gcount
+...     gcount +=1
+...     return gcount
+...
+>>> def global_counter_test():
+...     print(global_counter())
+...     print(global_counter())
+...     print(global_counter())
+...
+>>> global_counter_test()
+1
+2
+3
+>>>
+
+二 nonlocal
+nonlocal与global相似，但是它只是作用于嵌套作用域，而且只是作用在函数里面
+nonlocal关键字用来在函数或其他作用域中使用外层(非全局)变量。适用于嵌套函数中内部函数修改外部变量的值
+
+>>> def make_counter():
+...     count=0
+...     def counter():
+...         nonlocal count
+...         count +=1
+...         return count
+...     return counter
+...
+>>> def make_counter_test():
+...     mc = make_counter()
+...     print(mc())
+...     print(mc())
+...     print(mc())
+...
+>>> make_counter_test()
+1
+2
+3
+>>>
+
+也可以使用generator来实现类似的counter
+>>> def counter_generator():
+...    count = 0
+...    while True:
+...         count += 1
+...         yield count
+...
+>>> def counter_generator_test():
+        # below is for python 3.x and works well
+...     citer = counter_generator().__iter__()
+...     i = 0
+...     while(i < 3) :
+...         print(citer.__next__())
+...         i+=1
+...
+>>> def counter_generator_test2():
+        #below code don't work, because next() function still suspends and cannot exit, it seems the iterator is generated every time.
+...     j = 0
+...     for iter in counter_generator():
+...         while(j < 3) :
+...             print(iter)
+...             j+=1
+...
+>>> counter_generator_test()
+1
+2
+3
+>>> counter_generator_test2()
+1
+1
+1
+
+>>> def test():
+...     x=1
+...     print("test:"+str(x))
+...     def test2():
+...         nonlocal x
+...         x=3
+...         print("test2:"+str(x))
+...     class a:
+...         nonlocal x
+...         x=5
+...         print("a:"+str(x))
+...         def a1():
+...             nonlocal x
+...             x=7
+...             print("a.a1:"+str(x))
+...     test2()
+...     a.a1()
+...     print("test:"+str(x))
+...
+>>> test()
+test:1
+a:5
+test2:3
+a.a1:7
+test:7
+>>>
+
+>>> def test():
+...     x=1
+...     print("test:"+str(x))
+...     class a:
+...         nonlocal x
+...         x=5
+...         print("a:"+str(x))
+...         def a1():
+...             nonlocal x
+...             x=7
+...             print("a.a1:"+str(x))
+...     a()
+...     print("test:"+str(x))
+...
+>>> test()
+test:1
+a:5
+test:5
+>>>
+
+一点需要注意的地方：（
+global与nonlocal的区别：global可以从嵌套的作用域开始执行，但是nonlocal所声明的变量必须已经存在，不然会报错
+
+>>> def test():
+...     global x
+...
+>>> def test():
+...     nonlocal x
+...
+  File "<stdin>", line 2
+SyntaxError: no binding for nonlocal 'x' found
+>>>
+
+nonlocal主要用于修改外层函数的变量
+>>> def test():
+...     x=1
+...     print("test:"+str(x))
+...     def test2():
+...         x=3
+...         print("test2:"+str(x))
+...     test2()
+...     return x
+...
+>>> test()
+test:1
+test2:3
+1
+>>>
+
+>>> def test():
+...     x=1
+...     print("test:"+str(x))
+...     def test2():
+...         nonlocal x
+...         x=3
+...         print("test2:"+str(x))
+...     test2()
+...     return x
+...
+>>> test()
+test:1
+test2:3
+3
+>>>
+
+>>> def outside():
+...     var=5
+...     def inside():
+...         var=3
+...         print(var)
+...     inside()
+...
+>>> outside()
+3
+>>> def outside():
+...     var=5
+...     def inside():
+...         print(var)
+...         var=3
+...     inside()
+...
+>>> outside()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 6, in outside
+  File "<stdin>", line 4, in inside
+UnboundLocalError: local variable 'var' referenced before assignment
+>>>
+
+局部作用域里的代码可以读外部作用域（包括全局作用域）里的变量，但不能更改它。一旦进行更改，就会将其当成是局部变量。而如果在更改前又进行了读取操作，则会抛出异常。
+>>> def f():
+...     x='1'
+...     def g():
+...         x+='2'
+...         return x
+...     return g
+...
+>>> print(f()())
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "<stdin>", line 4, in g
+UnboundLocalError: local variable 'x' referenced before assignment
+>>>
+
+如果要更改外部作用域里的变量，最简单的办法就是将其放入全局作用域，用global关键字引入该变量。
+>>> x=''
+>>> def f():
+...     global x
+...     x='1'
+...     def g():
+...         global x
+...         x+='2'
+...         return x
+...     return g
+...
+>>> print(f()())
+12
+>>>
+
+Python 3.x引入了nonlocal关键字，只要在闭包内用nonlocal声明变量，就可以让解释器在外层函数中查找变量名了
+>>> def a():
+...     x=0
+...     def b():
+...         nonlocal x
+...         x+=1
+...         print(x)
+...     return b
+...
+>>> a()()
+1
+>>>
+
+>>> x=99
+>>> def func():
+...     x=88
+...
+>>> func()
+>>> print(x)
+99
+>>>
+上面的程序在func函数中为x赋值为88,按照上述规则，因为func函数中并没有变量x，因此Python会在func函数的本地作用域创建一个变量x，也就是说此x并非"x = 99"中的x，
+这样也就能够理解为什么最后程序输出依然为99了。
+
+>>> x=99
+>>> def func():
+...     global x
+...     x=88
+...
+>>> func()
+>>> print(x)
+88
+>>>
+上述程序中的global x语句告诉Python在func的本地作用域内，要使用全局作用域中的变量x，因此在下面的x = 88语句中，Python不会再在本地作用域中新建一个变量，
+而是直接引用全局作用域中的变量x，这样程序最后输出88也就不难理解了。 
+
+关键字nonlocal的作用与关键字global类似，使用nonlocal关键字可以在一个嵌套的函数中修改嵌套作用域中的变量
+>>> def func():
+...     count=1
+...     def foo():
+...         count=12
+...     foo()
+...     print(count)
+...
+>>> func()
+1
+>>>
+上面的程序中，在嵌套的foo函数中，对变量count赋值，同样会创建一个新的变量，而非使用count = 1语句中的count，如果要修改嵌套作用域中的count，就要使用nonlocal关键字
+
+>>> def func():
+...     count=1
+...     def foo():
+...         nonlocal count
+...         count=12
+...     foo()
+...     print(count)
+...
+>>> func()
+12
+>>>
+上面的程序中，在foo函数中使用了nonlocal关键字，就会告诉Python在foo函数中使用嵌套作用域中的变量count，因此对变量count进行修改时，
+会直接影响到嵌套作用域中的count变量，程序最后也就输出12了. 
+
+注意:使用global关键字修饰的变量之前可以并不存在，而使用nonlocal关键字修饰的变量在嵌套作用域中必须已经存在。

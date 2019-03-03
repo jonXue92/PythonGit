@@ -1,0 +1,59 @@
+Python rstrip()方法
+Python rstrip() 删除 string 字符串末尾的指定字符（默认为空格）
+rstrip()方法语法：
+    str.rstrip([chars])
+
+strip()
+Python strip() 方法用于移除字符串头尾指定的字符（默认为空格）或字符序列
+string.strip([chars])，返回移除字符串头尾指定的字符序列生成的新字符串。（想去掉字符串里面的哪些字符，就把这些字符当参数传入。此函数只会删除头和尾的字符，中间的不会删除。）如果strip()的参数为空，那么会默认删除字符串头和尾的空白字符(包括\n，\r，\t这些)。
+>>> a=" \rzha ng\n\t "
+>>> print(len(a))
+11
+>>> b=a.strip()
+>>> print(b)
+zha ng
+>>> print(len(b))
+6
+>>>
+传入多个字符参数的情况：
+>>> a="aabcacb1111acbba"
+>>> print(a.strip("abc"))
+1111
+>>> print(a.strip("acb"))
+1111
+>>> print(a.strip("bac"))
+1111
+>>> print(a.strip("bca"))
+1111
+>>> print(a.strip("cab"))
+1111
+>>> print(a.strip("cba"))
+1111
+>>>
+传的参数不管是“abc”还是abc的其他排列形式都不重要，重要的是函数只知道要删除的字符是”a”，”b”，”c”。函数会把传的参数拆解成一个个的字符，然后把头尾的这些字符去掉。
+
+lstrip()和rstrip() 
+这两个函数和上面的strip()基本一样，参数结构也一样，只不过一个是去掉左边的(头部)，一个是去掉右边的(尾部)
+
+
+在做角色控制中，有一个地方用到rstrip，判断用户请求的url是否与数据库对应可用权限中url相符。
+if request.path == x.url or request.path.rstrip('/') == x.url: #精确匹配，判断request.path是否与permission表中的某一条相符
+
+Python中strip用于去除字符串的首位字符，同理，lstrip用于去除左边的字符，rstrip用于去除右边的字符。
+
+这三个参数都可以传入一个参数，指定要去除的首尾字符。
+
+需要注意的是，传入的是一个字符数组，编译器去除两端所有匹配的字符，直到没有匹配的字符，
+>>> testString="saaaay yes no yaaaass"
+>>> print(testString.strip('say'))
+ yes no
+>>>
+可见，testString依次被去除首尾在['s','a','y']数组内的字符，直到剩余字符不再数组内。
+
+>>> print(testString.strip('say '))
+es no
+>>> print(testString.lstrip('say'))
+ yes no yaaaass
+>>> print(testString.rstrip('say'))
+saaaay yes no
+>>>
