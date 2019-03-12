@@ -17,3 +17,9 @@ Content:
 **chapter8**: Stack, Queue, Hash & Heap
 
 **chapter9**: Interval, Array & Matrix
+
+**big data**
+
+**bit operation**
+
+**segment Tree**
