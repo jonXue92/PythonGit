@@ -22,4 +22,4 @@ Content:
 
 **bit operation**
 
-**segment Tree**
+**python**
