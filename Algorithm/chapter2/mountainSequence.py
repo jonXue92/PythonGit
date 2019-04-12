@@ -1,0 +1,20 @@
+# -*- coding: utf-8 -*-
+
+class MountainSequence:
+
+    def mountainSequence(self, nums):
+        if not nums:
+            return -1
+            
+        # find first index i so that nums[i] > nums[i + 1]
+        start, end = 0, len(nums) - 1
+        while start + 1 < end:
+            mid = (start + end) // 2
+            # mid + 1 保证不会越界
+            # 因为 start 和 end 是 start + 1 < end
+            if nums[mid] > nums[mid + 1]:
+                end = mid
+            else:
+                start = mid
+        
+        return max(nums[start], nums[end])
